@@ -44,7 +44,8 @@ ato('12-01-2017',1,1,105).
 +ato( D,IdU,IdS,C ) :: (findall( ( IdU,IdS ),(ato( D,IdU,IdS,C )),S ),
                   comprimento( S,X ), 
 				  X == 1).
-
+% Id do utente e do servico tem de existir para inserir um ato médico
++ato( D,IdU,IdS,C ) :: utente( IdU,_,_,_ ), servico( IdS,_,_,_ ).
 
 
 
