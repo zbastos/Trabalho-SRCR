@@ -1,5 +1,5 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% SIST. REPR. CONHECIMENTO E RACIOCINIO MiEI
+% SIST. REPR. CONHECIMENTO E RACIOCINIO - MiEI
 % Trabalho de grupo 1º exercício
 % Grupo de trabalho nº10 
 
@@ -33,15 +33,15 @@ ato('12-01-2017',1,1,105).
 
 % Invariante Estrutural:  nao permitir a insercao de conhecimento
 %                         repetido
-+utente( Id,N,I,M ) :: (solucoes( ( Id ),utente( Id,N,I,M ), S),
++utente( Id,N,I,M ) :: (findall( Id ,utente( Id,N,I,M ), S),
                   comprimento( S,X ), 
 				  X == 1).
 
-+servico( Id,D,I,C ) :: (solucoes( ( Id ),(servico( Id,D,I,C )),S ),
++servico( Id,D,I,C ) :: (findall( ( Id ),(servico( Id,D,I,C )),S ),
                   comprimento( S,X ), 
 				  X == 1).
 
-+ato( D,IdU,IdS,C ) :: (solucoes( ( IdU,IdS ),(ato( D,IdU,IdS,C )),S ),
++ato( D,IdU,IdS,C ) :: (findall( ( IdU,IdS ),(ato( D,IdU,IdS,C )),S ),
                   comprimento( S,X ), 
 				  X == 1).
 
@@ -57,8 +57,6 @@ ato('12-01-2017',1,1,105).
 comprimento([], 0) .
 comprimento([H|T], R) :-
 	comprimento(T, X),	R is 1+X .
-
-solucoes(X,Y,Z) :- findall(X,Y,Z).
 
 evolucao( F ) :- 	solucoes(I,+F::I,L), 
 					insercao(F), 
