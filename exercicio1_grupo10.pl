@@ -18,12 +18,14 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % SICStus PROLOG: definicoes iniciais
 
-:- op( 900,xfy,'::' ). % não é PROLOG, preciso definir para usar os invariantes
+:- op( 900,xfy,'::' ). 
+% não é PROLOG, preciso definir para usar os invariantes
 % op(Precedência(prioridade) 1 a 1200 ,formato do operador(binário, unário...), operador/functor)
 :- dynamic utente/4.
 :- dynamic servico/4.
 :- dynamic ato/4.
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %Base de conhecimento inicial
 
 utente(1,'Renato Portoes',32,'Rua Nova Santa Cruz').
@@ -31,37 +33,86 @@ servico(1,'Unidade de saude','Centro de Saude','Braga').
 ato('12-01-2017',1,1,105).
 
 
-% Invariante Estrutural:  nao permitir a insercao de conhecimento
-%                         repetido
-+utente( Id,N,I,M ) :: (findall( Id ,utente( Id,N,I,M ), S),
-                  comprimento( S,X ), 
-				  X == 1).
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Invariante Estrutural:  nao permitir a insercao de conhecimento repetido
 
-+servico( Id,D,I,C ) :: (findall( ( Id ),(servico( Id,D,I,C )),S ),
-                  comprimento( S,X ), 
-				  X == 1).
++utente(ID,N,I,M) :: (solucoes((ID),utente(ID,N,I,M),S),
+                  	  comprimento(S,X), 
+				      X == 1).
 
-+ato( D,IdU,IdS,C ) :: (findall( ( IdU,IdS ),(ato( D,IdU,IdS,C )),S ),
-                  comprimento( S,X ), 
-				  X == 1).
++servico(ID,D,I,C) :: (solucoes((ID),(servico(ID,D,I,C)),S),
+                  	   comprimento(S,X), 
+				  	   X == 1).
+
++ato(D,IDU,IDS,C) :: (solucoes((IDU,IDS),(ato(D,IDU,IDS,C)),S),
+                  	  comprimento(S,X), 
+				  	  X == 1).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Invariante Estrutural: nao permitir a remocao de conhecimento inexistente
+
+-utente( ID,N,I,M ) :: (solucoes( (ID) ,utente( ID,N,I,M ), S),
+                  		comprimento( S,X ), 
+				  		X == 1).
+
+-servico( ID,D,I,C ) :: (solucoes( ( ID ),(servico( ID,D,I,C )),S ),
+                  		 comprimento( S,X ), 
+				  		 X == 1).
+
+-ato( D,IDU,IDS,C ) :: (solucoes( ( IDU,IDS ),(ato( D,IDU,IDS,C )),S ),
+                  		comprimento( S,X ), 
+				  		X == 1).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Id do utente e do servico tem de existir para inserir um ato médico
-+ato( D,IdU,IdS,C ) :: utente( IdU,_,_,_ ), servico( IdS,_,_,_ ).
 
++ato( D,IDU,IDS,C ) :: (utente( IDU,_,_,_ ), 
+						servico( IDS,_,_,_ )).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado registarUtente: ID, Nome, Idade, Morada -> {V,F}
 
+registarUtente(ID,N,I,M) :- evolucaoA(utente(ID,N,I,M)).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado registarServico: ID, Descricao, Instituicao, Cidade -> {V,F}
+
+registarServico(ID,D,I,C) :- evolucaoA(servico(ID,D,I,C)).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado registarAto: Data, IdUt, IdServ, Custo -> {V,F}
+
+registarAto(D,IDUT,IDS,C) :- evolucaoA(ato(D,IDUT,IDS,C)).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado removerUtente: ID -> {V,F}
+
+removerUtente(ID) :- evolucaoD(utente(ID,_,_,_)).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado registarUtente: ID -> {V,F}
+
+removerServico(ID) :- evolucaoD(servico(ID,_,_,_)).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado registarUtente: Data, IdUt, IdServ, Custo -> {V,F}
+
+removerAto(D,IDUT,IDS) :- evolucaoD(ato(D,IDUT,IDS,_)).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado que permite a evolucao do conhecimento
 
-
-
 comprimento([], 0) .
-comprimento([H|T], R) :-
-	comprimento(T, X),	R is 1+X .
+comprimento([H|T], R) :- comprimento(T, X),	
+						 R is 1+X .
 
-evolucao( F ) :- 	solucoes(I,+F::I,L), 
-					insercao(F), 
-					testar(L).
+evolucaoA( F ) :- solucoes(I,+F::I,L),
+				  insercao(F), 
+				  testar(L).
+
+evolucaoD( F ) :- solucoes(I,-F::I,L),
+				  retract(F),
+				  testar(L).
 
 insercao( T ) :- assert(T).
 insercao( T ) :- retract(T), !,fail.
@@ -69,3 +120,4 @@ insercao( T ) :- retract(T), !,fail.
 testar([]).
 testar([I|L]) :- I , testar(L).
 
+solucoes(X,Y,Z) :- findall(X,Y,Z).
