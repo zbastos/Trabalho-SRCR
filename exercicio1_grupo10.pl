@@ -53,15 +53,15 @@ ato('12-01-2017',1,1,105).
 
 -utente( ID,N,I,M ) :: (solucoes( (ID) ,utente( ID,N,I,M ), S),
                   		comprimento( S,X ), 
-				  		X == 1).
+				  		X == 0).
 
 -servico( ID,D,I,C ) :: (solucoes( ( ID ),(servico( ID,D,I,C )),S ),
                   		 comprimento( S,X ), 
-				  		 X == 1).
+				  		 X == 0).
 
 -ato( D,IDU,IDS,C ) :: (solucoes( ( IDU,IDS ),(ato( D,IDU,IDS,C )),S ),
                   		comprimento( S,X ), 
-				  		X == 1).
+				  		X == 0).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Id do utente e do servico tem de existir para inserir um ato médico
@@ -102,9 +102,7 @@ removerAto(D,IDUT,IDS) :- evolucaoD(ato(D,IDUT,IDS,_)).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado que permite a evolucao do conhecimento
 
-comprimento([], 0) .
-comprimento([H|T], R) :- comprimento(T, X),	
-						 R is 1+X .
+comprimento(S,X) :- length(S,X).
 
 evolucaoA( F ) :- solucoes(I,+F::I,L),
 				  insercao(F), 
