@@ -63,15 +63,27 @@ ato('12-01-2017',1,1,105).
 registar(T) :- evolucao(T).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensão do predicado removerUtente: Termo -> {V,F}
+% Extensão do predicado remover: Termo -> {V,F}
 
 remover(T) :- retrocesso(T).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado utenteID: ID, Resultado -> {V,F}
+
 utenteID(ID,R) :- solucoes((ID,F,P,E),utente(ID,F,P,E),R).
 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado utentesNome: Nome, Resultado -> {V,F}
+
 utentesNome(N,R) :- solucoes((ID,N,P,E),utente(ID,N,P,E),R).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado utentesIdade: Idade, Resultado -> {V,F}
 		
 utentesIdade(I,R) :- solucoes((ID,N,I,E),utente(ID,N,I,E),R).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado utentesCidade: Cidade, Resultado -> {V,F}
 
 utentesCidade(C,R) :- solucoes((ID,N,P,C),utente(ID,N,P,C),R).		  
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
