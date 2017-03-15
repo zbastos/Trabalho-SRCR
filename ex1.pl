@@ -25,15 +25,20 @@
 :- dynamic servico/4.
 :- dynamic ato/4.
 
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Invariante Estrutural:  nao permitir a insercao de conhecimento repetido
 
-+utente(IDU,N,I,M) :: (solucoes(IDU,utente(IDU,N,I,M),S), comprimento(S,X), X == 1).
++utente(IDU,N,I,M) :: (solucoes(IDU,utente(IDU,_,_,_),S), 
+					   comprimento(S,X), 
+					   X == 1).
 
-+servico(IDS,D,I,C) :: (solucoes(IDS,servico(IDS,D,I,C),S), comprimento(S,X), X == 1).
++servico(IDS,D,I,C) :: (solucoes(IDS,servico(IDS,_,_,_),S), 
+						comprimento(S,X), 
+						X == 1).
 
-+ato(D,IDUT,IDSE,C) :: (solucoes((IDUT,IDSE),ato(D,IDUT,IDSE,C),S), comprimento(S,X), X == 1).
++ato(D,IDUT,IDSE,C) :: (solucoes((D,IDUT,IDSE), ato(D,IDUT,IDSE,_),S), 
+						comprimento(S,X), 
+						X == 1).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Id do utente e do servico tem de existir para inserir um ato médico
@@ -45,6 +50,10 @@
 %Base de conhecimento inicial
 
 utente(1,'Renato Portoes',32,'Rua Nova Santa Cruz').
+utente(2,'Renato Portoes',32,'Rua Nova Santa Cruz').
+utente(3,'Ricardo',20,'Rua Nova Santa Cruz').
+utente(4,'Ana',22,'Rua Nova Santa Cruz').
+utente(5,'Ze',12,'Rua Nova Santa Cruz').
 servico(1,'Unidade de saude','Centro de Saude','Braga').
 ato('12-01-2017',1,1,105).
 
@@ -58,10 +67,20 @@ registar(T) :- evolucao(T).
 
 remover(T) :- retrocesso(T).
 
+utenteID(ID,R) :- solucoes((ID,F,P,E),utente(ID,F,P,E),R).
+
+utentesNome(N,R) :- solucoes((ID,N,P,E),utente(ID,N,P,E),R).
+		
+utentesIdade(I,R) :- solucoes((ID,N,I,E),utente(ID,N,I,E),R).
+
+utentesCidade(C,R) :- solucoes((ID,N,P,C),utente(ID,N,P,C),R).		  
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado que permite a evolucao do conhecimento
 
-comprimento(S,X) :- length(S,X).
+comprimento([],0).
+comprimento([H|T],N) :- 
+	comprimento(T,N1),
+	N is N1+1.
 
 remove(T) :- retract(T).
 
@@ -71,12 +90,14 @@ insercao(T) :- retract(T), !,fail.
 testar([]).
 testar([I|L]) :- I, testar(L).
 
-evolucao(F) :- solucoes(I,+F::I,L),
-			   insercao(F), 
-			   testar(L).
+evolucao(F) :- 
+	solucoes(I,+F::I,L),
+	insercao(F), 
+	testar(L).
 
-retrocesso(F) :- solucoes(I,+F::I,L),
-				 testar(L),
-				 remove(F).
+retrocesso(F) :- 
+	solucoes(I,+F::I,L),
+	testar(L),
+	remove(F).
 
 solucoes(X,Y,Z) :- findall(X,Y,Z).
