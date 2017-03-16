@@ -55,7 +55,17 @@ utente(3,'Ricardo',20,'Rua Nova Santa Cruz').
 utente(4,'Ana',22,'Rua Nova Santa Cruz').
 utente(5,'Ze',12,'Rua Nova Santa Cruz').
 servico(1,'Unidade de saude','Centro de Saude','Braga').
-ato('12-01-2017',1,1,105).
+servico(2,'Unidade de saude','Centro de Saude','Braga').
+servico(3,'Unidade de saude','Centro','Braga').
+servico(4,'Unidade de saude','Centro de Saude','Braga').
+servico(5,'Unidade de saude','Centro','Braga').
+servico(6,'Unidade de saude','Centro de Saude','Braga').
+ato('12-01-2017',1,1,19).
+ato('13-01-2017',1,2,10).
+ato('14-01-2017',1,3,15).
+ato('15-01-2017',1,4,5).
+ato('16-01-2017',1,5,12).
+ato('17-01-2017',1,6,14).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado registar: Termo -> {V,F}
@@ -83,9 +93,16 @@ utentesNome(N,R) :- solucoes((ID,N,P,E),utente(ID,N,P,E),R).
 utentesIdade(I,R) :- solucoes((ID,N,I,E),utente(ID,N,I,E),R).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensão do predicado utentesCidade: Cidade, Resultado -> {V,F}
+% Extensão do predicado utentesCidade: Morada, Resultado -> {V,F}
 
-utentesCidade(C,R) :- solucoes((ID,N,P,C),utente(ID,N,P,C),R).		  
+utentesCidade(M,R) :- solucoes((ID,N,P,M),utente(ID,N,P,M),R).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado instituicao: Instituicao -> {V,F}
+
+instituicoes(H) :- servico(_,_,H,_).
+
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado que permite a evolucao do conhecimento
 
