@@ -48,7 +48,7 @@ retrocesso(F) :-
 solucoes(X,Y,Z) :- findall(X,Y,Z).
 
 %----------------------------------------------------------------------------
-%								GERAL
+%									GERAL
 %----------------------------------------------------------------------------
 
 % Extensão do predicado sum: Lista, Resultado -> {V,F}
@@ -77,7 +77,7 @@ eliminarElemento([H|T], E, Res)	:- H\== E, eliminarElemento(T, E, R), Res = [H|R
 
 
 %----------------------------------------------------------------------------
-%							Invariantes
+%								Invariantes
 %----------------------------------------------------------------------------
 
 % Invariante Estrutural:  não permitir a inserção de conhecimento repetido
@@ -104,7 +104,7 @@ eliminarElemento([H|T], E, Res)	:- H\== E, eliminarElemento(T, E, R), Res = [H|R
 
 
 %----------------------------------------------------------------------------
-%					Base de conhecimento inicial
+%						Base de conhecimento inicial
 %----------------------------------------------------------------------------
 
 utente(1,'Renato Portoes',32,'Rua Nova Santa Cruz').
@@ -134,7 +134,7 @@ ato('17-01-2017',3,6,14).
 
 
 %----------------------------------------------------------------------------
-%							Registar
+%									Registar
 %----------------------------------------------------------------------------
 
 % Extensão do predicado registar: Termo -> {V,F}
@@ -152,7 +152,7 @@ registarAto(D,IDUT,IDSE,C) :- evolucao(ato(D,IDUT,IDSE,C)).
 
 
 %----------------------------------------------------------------------------
-%							Remover
+%									Remover
 %----------------------------------------------------------------------------
 
 % Extensão do predicado remover: Termo -> {V,F}
@@ -164,13 +164,13 @@ removerUtente(ID) :- retrocesso(utente(ID,N,I,M)).
 % Extensão do predicado removerServico: Id_Serviço, Descrição, Instituição, Cidade -> {V,F}
 removerServico(ID) :- retrocesso(servico(ID,D,I,C)).
 
-% Extensão do predicado removerAto: Data, Id_Utente, Id_Serviço, Custo -> {V,F}
-removerAto(D,IDUT,IDSE,C) :- retrocesso(ato(D,IDUT,IDSE,C)).
+% Extensão do predicado removerAto: Data, Id_Utente, Id_Serviço -> {V,F}
+removerAto(D,IDUT,IDSE) :- retrocesso(ato(D,IDUT,IDSE,C)).
 %----------------------------------------------------------------------------
 
 
 %----------------------------------------------------------------------------
-%						Listagem de informação
+%							Listagem de informação
 %----------------------------------------------------------------------------
 
 % Extensão do predicado utenteID: ID, Resultado -> {V,F}
@@ -213,7 +213,7 @@ findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C),S),
 					concat(S,W,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-% Extensão do predicado 
+% Extensão do predicado utenteInstituicoes: Id_Utente, Resultado -> {V,F}
 utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
 					  	   findInst(S,W),
 					  	   eRepetidos(W,R).
@@ -223,6 +223,7 @@ findInst([H|T],R) :- solucoes(I,servico(H,D,I,C),S),
 					 findInst(T,W),
 					 concat(S,W,R).
 
+% Extensão do predicado utenteServico: Id_Serviço, Resultado -> {V,F}
 utenteServico(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
 					  findServico(S,R).
 
@@ -232,17 +233,19 @@ findServico([H|T],R) :- solucoes((H,D,I,C),servico(H,D,I,C),S),
 						concat(S,W,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-% Calcular o custo total dos atos médicos por utente/serviço/instituicao/data;
-
+% Extensão do predicado custoPorUtente: Id_Utente, Resultado -> {V,F}
 custoPorUtente(IDU,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
 						sum(S,R).
 						
+% Extensão do predicado custoPorServico: Id_Serviço, Resultado -> {V,F}
 custoPorServico(IDS,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
 						sum(S,R).
 
+% Extensão do predicado custoPorData: Data, Resultado -> {V,F}
 custoPorData(Data,R) :- solucoes(Custo,ato(Data,IDU,IDS,Custo),S),
 						sum(S,R).
 
+% Extensão do predicado custoPorInstituicao: Instituição, Resultado -> {V,F}
 custoPorInstituicao(I,R) :- solucoes(IDS,servico(IDS,D,I,C),S),
 							findCusto(S,W),
 							sum(W,R).
@@ -251,6 +254,4 @@ findCusto([X],R) :- solucoes(C,ato(_,_,X,C),R).
 findCusto([X|T],R) :- solucoes(C,ato(_,_,X,C),S),
 					  findCusto(T,W),
 					  concat(S,W,R).
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
-
 %----------------------------------------------------------------------------
