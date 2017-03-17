@@ -26,6 +26,9 @@
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado que permite a evolucao do conhecimento
 
+concat([],R,R).
+concat([X|L],R,[X|S]) :- concat(L,R,S).
+
 comprimento([],0).
 comprimento([H|T],N) :- 
 	comprimento(T,N1),
@@ -50,6 +53,18 @@ retrocesso(F) :-
 	remove(F).
 
 solucoes(X,Y,Z) :- findall(X,Y,Z).
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado eliminarRepetidos: L, R -> {V, F}
+
+eRepetidos([], []) .
+eRepetidos([H|T], Res) :- eliminarElemento(T, H, E), eRepetidos(E, R), Res = [H|R].
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado eliminarElemento: L, E, R -> {V, F}
+
+eliminarElemento([], _, []).
+eliminarElemento([H|T], H, R) :- eliminarElemento(T, H, R).
+eliminarElemento([H|T], E, Res)	:- H\== E, eliminarElemento(T, E, R), Res = [H|R].
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %							Invariantes
@@ -148,23 +163,39 @@ atoUtente(IDU,R) :- solucoes((D,IDU,C),ato(D,IDU,IDS,C),R).
 atoServico(IDS,R):- solucoes((D,IDS,C),ato(D,IDU,IDS,C),R).
 
 atoInstituicao(I,R) :- solucoes(IDS,servico(IDS,_,I,_),L),
-					   findList(L,R).
-					
-concat([],R,R).
-concat([X|L],R,[X|S]) :- concat(L,R,S).
+					   findAto(L,R).
 
-findList([X],R) :- solucoes((D,IDU,X,C),ato(D,IDU,X,C),R).
-findList([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C),S),
-					 findList(T,W),
-					 concat(S,W,R).
+findAto([X],R) :- solucoes((D,IDU,X,C),ato(D,IDU,X,C),R).
+findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C),S),
+					findAto(T,W),
+					concat(S,W,R).
 
 %%outra versao(tem repetidos)
-utentesPorInstituicao( Instituicao, (IdUt, Nome, Idade, Morada) ) :-
+utentesPorInstituicao( Instituicao, IdUt, Nome, Idade, Morada ) :-
 	servico( IdServ, Desc, Instituicao, Cidade ),
 	ato( Data, IdUt, IdServ, Custo ),
 	utente( IdUt, Nome, Idade, Morada ).
 
-ss(I,R) :- solucoes((IDU,Nome,Id,M,I), utentesPorInstituicao(I,(IDU,Nome,Id,M)),R).
+ss(I,R) :- solucoes((IDU,Nome,Id,M), utentesPorInstituicao(I,IDU,Nome,Id,M),R).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% Extensão do predicado 
+utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
+					  	   findInst(S,W),
+					  	   eRepetidos(W,R).
+
+findInst([X],R) :- solucoes(I,servico(X,D,I,C),R).
+findInst([H|T],R) :- solucoes(I,servico(H,D,I,C),S),
+					 findInst(T,W),
+					 concat(S,W,R).
+
+utenteServico(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
+					  findServico(S,R).
+
+findServico([X],R) :- solucoes((X,D,I,C),servico(X,D,I,C),R).
+findServico([H|T],R) :- solucoes((H,D,I,C),servico(H,D,I,C),S),
+						findServico(T,W),
+						concat(S,W,R).
 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
