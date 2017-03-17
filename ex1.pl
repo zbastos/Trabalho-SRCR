@@ -14,6 +14,7 @@
 :- set_prolog_flag( discontiguous_warnings,off ).
 :- set_prolog_flag( single_var_warnings,off ).
 :- set_prolog_flag( unknown,fail ).
+:- set_prolog_flag(toplevel_print_options, [quoted(true), portrayed(true), max_depth(0)]).
 
 %----------------------------------------------------------------------------
 % SICStus PROLOG: definições iniciais
@@ -134,11 +135,11 @@ utente(14,'Marco Cardoso',33,'Avenida Principal').
 servico(1,'Ortopedia','Centro de Saude','Braga').
 servico(2,'Cardiologia','Centro de Saude','Braga').
 servico(3,'Neurocirurgia','Hospital privado','Braga').
-servico(4,'Pediatria','Posto médico','Esposende').
-servico(5,'Otorrinolaringologia','Hospital público','Porto').
-servico(6,'Oftalmologia','Clínica de Santa Madalena','Felgueiras').
+servico(4,'Pediatria','Posto medico','Esposende').
+servico(5,'Otorrinolaringologia','Hospital publico','Porto').
+servico(6,'Oftalmologia','Clinica de Santa Madalena','Felgueiras').
 servico(7,'Urologia','Centro de Saude','Amares').
-servico(8,'Ginecologia','Clínica do Tubarao','Viana do Castelo').
+servico(8,'Ginecologia','Clinica do Tubarao','Viana do Castelo').
 
 
 ato('12-01-2017',1,1,19).
@@ -210,12 +211,13 @@ utentesNome(N,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 % Extensão do predicado utentesIdade: Idade, Resultado -> {V,F}
 utentesIdade(I,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 
-% Extensão do predicado utentesCidade: Morada, Resultado -> {V,F}
-utentesCidade(M,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
+% Extensão do predicado utentesMorada: Morada, Resultado -> {V,F}
+utentesMorada(M,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado instituicoes: Resultado -> {V,F}
-instituicoes(R) :- solucoes(I,servico(_,_,I,_),R).
+instituicoes(R) :- solucoes(I,servico(_,_,I,_),S),
+				   eRepetidos(S,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado servicoInstituicao: Instituição, Resultado -> {V,F}
@@ -226,23 +228,17 @@ servicoCidade(C,R) :- solucoes((ID,D,C),servico(ID,D,I,C),R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado instituicaoUtentes: Instituição, Resultado -> {V,F}
-instituicaoUtentes(I,R) :- solucoes(IDS,servico(IDS,_,I,C),S),
-						   findUtentesInst(S,W),
-						   findUtentesServico(W,R).
+instituicaoUtentes(I,R) :- solucoes(IDU,institUtente(I,IDU),S),
+						   eRepetidos(S,W),
+						   findUtentesServico(W,R).						   
 
-findUtentesInst([X],R) :- solucoes(IDS,ato(IDS,_,X,_),R).
-findUtentesInst([X|T],R) :- solucoes(IDS,ato(IDS,_,X,_),S),
-							findUtentesInst(T,W),
-							concat(S,W,R).
-
-iu(I,IDU,IDS) :- servico(IDS,_,I,_), 
-				 ato(_,IDU,IDS,_),
-				 utente(IDU,_,_,_).
-
+institUtente(I,IDU) :- servico(IDS,D,I,C), 
+					   ato(Data,IDU,IDS,Custo).			 
 
 % Extensão do predicado servicoUtentes: Servico, Resultado -> {V,F}
 servicoUtentes(IDS,R) :- solucoes(IDU,ato(_,IDU,IDS,_),S),
-						 findUtentesServico(S,R).
+						 eRepetidos(S,W),
+						 findUtentesServico(W,R).						 
 
 findUtentesServico([X],R) :- solucoes((X,N,I,M),utente(X,N,I,M),R).
 findUtentesServico([X|T],R) :- solucoes((X,N,I,M),utente(X,N,I,M),S),
@@ -288,11 +284,11 @@ findServico([H|T],R) :- solucoes((H,D,I,C),servico(H,D,I,C),S),
 
 % Extensão do predicado custoPorUtente: Id_Utente, Resultado -> {V,F}
 custoPorUtente(IDU,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
-						sum(S,R).
+						 sum(S,R).
 						
 % Extensão do predicado custoPorServico: Id_Serviço, Resultado -> {V,F}
 custoPorServico(IDS,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
-						sum(S,R).
+						  sum(S,R).
 
 % Extensão do predicado custoPorData: Data, Resultado -> {V,F}
 custoPorData(Data,R) :- solucoes(Custo,ato(Data,IDU,IDS,Custo),S),
