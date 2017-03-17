@@ -67,12 +67,16 @@ comprimento([H|T],N) :-
 
 % Extensão do predicado eliminarRepetidos: Lista, Resultado -> {V,F}
 eRepetidos([], []) .
-eRepetidos([H|T], Res) :- eliminarElemento(T, H, E), eRepetidos(E, R), Res = [H|R].
+eRepetidos([H|T], Res) :- eliminarElemento(T, H, E), 
+						  eRepetidos(E, R), 
+						  Res = [H|R].
 
 % Extensão do predicado eliminarElemento: Lista, Elemento, Resultado -> {V,F}
 eliminarElemento([], _, []).
 eliminarElemento([H|T], H, R) :- eliminarElemento(T, H, R).
-eliminarElemento([H|T], E, Res)	:- H\== E, eliminarElemento(T, E, R), Res = [H|R].
+eliminarElemento([H|T], E, Res)	:- H\== E, 
+								   eliminarElemento(T, E, R), 
+								   Res = [H|R].
 %----------------------------------------------------------------------------
 
 
@@ -87,6 +91,10 @@ eliminarElemento([H|T], E, Res)	:- H\== E, eliminarElemento(T, E, R), Res = [H|R
 					   X == 1).
 
 +servico(IDS,D,I,C) :: (solucoes(IDS,servico(IDS,_,_,_),S), 
+						comprimento(S,X), 
+						X == 1).
+
++servico(IDS,D,I,C) :: (solucoes((D,I),servico(_,D,I,_),S), 
 						comprimento(S,X), 
 						X == 1).
 
@@ -117,7 +125,7 @@ utente(7,'Joao Guilherme',89,'Avenida Central').
 utente(8,'Afonso Aragao',26,'Rua dos Palacetes').
 utente(9,'Jose Silva',73,'Estreito Largo').
 utente(10,'Frederico Pereira',4,'Rua dos Carretos').
-utente(11,'Rita Gameiro',52,'Rua Engenheiro Antonio Filipe'').
+utente(11,'Rita Gameiro',52,'Rua Engenheiro Antonio Filipe').
 utente(12,'Luis Marcio',15,'República das Bananas').
 utente(13,'Pedro Luis',53,'Largo do Bigode').
 utente(14,'Marco Cardoso',33,'Avenida Principal').
@@ -197,10 +205,10 @@ removerAto(D,IDUT,IDSE) :- retrocesso(ato(D,IDUT,IDSE,C)).
 utenteID(ID,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 
 % Extensão do predicado utentesNome: Nome, Resultado -> {V,F}
-utentesNome(N,R) :- solucoes((ID,N,I,M)),utente(ID,N,I,M),R).
+utentesNome(N,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 
 % Extensão do predicado utentesIdade: Idade, Resultado -> {V,F}
-utentesIdade(I,R) :- solucoes((ID,N,I,M)),utente(ID,N,I,M),R).
+utentesIdade(I,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 
 % Extensão do predicado utentesCidade: Morada, Resultado -> {V,F}
 utentesCidade(M,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
@@ -217,6 +225,31 @@ servicoInstituicao(I,R) :- solucoes((ID,D,I),servico(ID,D,I,C),R).
 servicoCidade(C,R) :- solucoes((ID,D,C),servico(ID,D,I,C),R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
+% Extensão do predicado instituicaoUtentes: Instituição, Resultado -> {V,F}
+instituicaoUtentes(I,R) :- solucoes(IDS,servico(IDS,_,I,C),S),
+						   findUtentesInst(S,W),
+						   findUtentesServico(W,R).
+
+findUtentesInst([X],R) :- solucoes(IDS,ato(IDS,_,X,_),R).
+findUtentesInst([X|T],R) :- solucoes(IDS,ato(IDS,_,X,_),S),
+							findUtentesInst(T,W),
+							concat(S,W,R).
+
+iu(I,IDU,IDS) :- servico(IDS,_,I,_), 
+				 ato(_,IDU,IDS,_),
+				 utente(IDU,_,_,_).
+
+
+% Extensão do predicado servicoUtentes: Servico, Resultado -> {V,F}
+servicoUtentes(IDS,R) :- solucoes(IDU,ato(_,IDU,IDS,_),S),
+						 findUtentesServico(S,R).
+
+findUtentesServico([X],R) :- solucoes((X,N,I,M),utente(X,N,I,M),R).
+findUtentesServico([X|T],R) :- solucoes((X,N,I,M),utente(X,N,I,M),S),
+							   findUtentesServico(T,W),
+							   concat(S,W,R).
+
+%--------------------------------- - - - - - - - - - -  -  -  -  - 
 % Extensão do predicado atoUtente: Id_Utente, Resultado -> {V,F}
 atoUtente(IDU,R) :- solucoes((D,IDU,C),ato(D,IDU,IDS,C),R).
 
