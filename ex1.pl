@@ -249,10 +249,8 @@ findUtentesServico([X|T],R) :- solucoes((X,N,I,M),utente(X,N,I,M),S),
 % Extensão do predicado atoUtente: Id_Utente, Resultado -> {V,F}
 atoUtente(IDU,R) :- solucoes((em(D),de(IDU),servico(Des),custa(C)),atoServicoInfo(D,IDU,IDS,C,Des),R).
 
-atoServicoInfo(D,IDU,IDS,C,Des) :- ato(D,IDU,IDS,C), servico(IDS,Des,Inst,Cidade).
-
 % Extensão do predicado atoServico: Id_Serviço, Resultado -> {V,F}
-atoServico(IDS,R):- solucoes((D,IDS,C),ato(D,IDU,IDS,C),R).
+atoServico(IDS,R):- solucoes((em(D),id(IDS),servico(Des),custo(C)),atoServicoInfo(D,IDU,IDS,C,Des),R).
 
 % Extensão do predicado atoInstituicao: Instituição, Resultado -> {V,F}
 atoInstituicao(I,R) :- solucoes(IDS,servico(IDS,_,I,_),L),
@@ -262,6 +260,8 @@ findAto([X],R) :- solucoes((D,IDU,X,C),ato(D,IDU,X,C),R).
 findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C),S),
 					findAto(T,W),
 					concat(S,W,R).
+
+atoServicoInfo(D,IDU,IDS,C,Des) :- ato(D,IDU,IDS,C), servico(IDS,Des,Inst,Cidade).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado utenteInstituicoes: Id_Utente, Resultado -> {V,F}
