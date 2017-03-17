@@ -247,7 +247,7 @@ findUtentesServico([X|T],R) :- solucoes((X,N,I,M),utente(X,N,I,M),S),
 
 %--------------------------------- - - - - - - - - - -  -  -  -  - 
 % Extensão do predicado atoUtente: Id_Utente, Resultado -> {V,F}
-atoUtente(IDU,R) :- solucoes((D,IDU,C),ato(D,IDU,IDS,C),R).
+atoUtente(IDU,R) :- solucoes((em(D),de(IDU),custa(C)),ato(D,IDU,IDS,C),R).
 
 % Extensão do predicado atoServico: Id_Serviço, Resultado -> {V,F}
 atoServico(IDS,R):- solucoes((D,IDS,C),ato(D,IDU,IDS,C),R).
