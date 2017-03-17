@@ -109,16 +109,29 @@ eliminarElemento([H|T], E, Res)	:- H\== E, eliminarElemento(T, E, R), Res = [H|R
 
 utente(1,'Renato Portoes',32,'Rua Nova Santa Cruz').
 utente(2,'Renato Portoes',32,'Rua Nova Santa Cruz').
-utente(3,'Ricardo',20,'Rua Nova Santa Cruz').
-utente(4,'Ana',22,'Rua Nova Santa Cruz').
-utente(5,'Ze',12,'Rua Nova Santa Cruz').
+utente(3,'Ricardo Azevedo',20,'Rua Velha Santa Cruz').
+utente(4,'Ana Martins',22,'Rua do Outeiro').
+utente(5,'Jose Vilaca',12,'Rua das Cegonhas').
+utente(6,'Sara Alberto',45,'Rua dos Marcianos').
+utente(7,'Joao Guilherme',89,'Avenida Central').
+utente(8,'Afonso Aragao',26,'Rua dos Palacetes').
+utente(9,'Jose Silva',73,'Estreito Largo').
+utente(10,'Frederico Pereira',4,'Rua dos Carretos').
+utente(11,'Rita Gameiro',52,'Rua Engenheiro Antonio Filipe'').
+utente(12,'Luis Marcio',15,'República das Bananas').
+utente(13,'Pedro Luis',53,'Largo do Bigode').
+utente(14,'Marco Cardoso',33,'Avenida Principal').
+
 
 servico(1,'Unidade de saude','Centro de Saude','Braga').
 servico(2,'Unidade de saude','Centro de Saude','Braga').
-servico(3,'Unidade de saude','Centro','Braga').
-servico(4,'Unidade de saude','Centro de Saude','Braga').
-servico(5,'Unidade de saude','Centro','Braga').
-servico(6,'Unidade de saude','Centro de Saude','Braga').
+servico(3,'Hospital','Hospital privado','Braga').
+servico(4,'Posto','Posto médico','Esposende').
+servico(5,'Hospital','Hospital público','Porto').
+servico(6,'Clínica','Clínica de Santa Madalena','Felgueiras').
+servico(7,'Unidade de saude','Centro de Saude','Amares').
+servico(8,'Clínica','Clínica do Tubarao','Viana do Castelo').
+
 
 ato('12-01-2017',1,1,19).
 ato('13-01-2017',1,2,10).
