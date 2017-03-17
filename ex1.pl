@@ -24,7 +24,10 @@
 :- dynamic ato/4.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
-% Extensão do predicado que permite a evolucao do conhecimento
+% Extensão do predicado que permite a evolucao do conhecimento (GERAL)
+
+sum([],0).
+sum([X|Y],G) :- sum(Y,R), G is R+X. 
 
 concat([],R,R).
 concat([X|L],R,[X|S]) :- concat(L,R,S).
@@ -111,6 +114,10 @@ ato('14-01-2017',1,3,15).
 ato('15-01-2017',1,4,5).
 ato('16-01-2017',1,5,12).
 ato('17-01-2017',1,6,14).
+ato('15-01-2017',2,4,5).
+ato('16-01-2017',2,5,12).
+ato('17-01-2017',2,6,14).
+ato('17-01-2017',3,6,14).
 	  
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %						Listagem de informação
@@ -197,6 +204,19 @@ findServico([H|T],R) :- solucoes((H,D,I,C),servico(H,D,I,C),S),
 						findServico(T,W),
 						concat(S,W,R).
 
+
+% Calcular o custo total dos atos médicos por utente/serviço/instituicao/data;
+
+custoPorUtente(IDU,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
+						sum(S,R).
+						
+custoPorServico(IDS,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
+						sum(S,R).
+
+custoPorData(Data,R) :- solucoes(Custo,ato(Data,IDU,IDS,Custo),S),
+						sum(S,R).
+
+% custoPorInstituicao(Instituicao,R) :- . 
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 %							Registar
