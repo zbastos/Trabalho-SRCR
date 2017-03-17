@@ -123,26 +123,33 @@ utente(13,'Pedro Luis',53,'Largo do Bigode').
 utente(14,'Marco Cardoso',33,'Avenida Principal').
 
 
-servico(1,'Unidade de saude','Centro de Saude','Braga').
-servico(2,'Unidade de saude','Centro de Saude','Braga').
-servico(3,'Hospital','Hospital privado','Braga').
-servico(4,'Posto','Posto médico','Esposende').
-servico(5,'Hospital','Hospital público','Porto').
-servico(6,'Clínica','Clínica de Santa Madalena','Felgueiras').
-servico(7,'Unidade de saude','Centro de Saude','Amares').
-servico(8,'Clínica','Clínica do Tubarao','Viana do Castelo').
+servico(1,'Ortopedia','Centro de Saude','Braga').
+servico(2,'Cardiologia','Centro de Saude','Braga').
+servico(3,'Neurocirurgia','Hospital privado','Braga').
+servico(4,'Pediatria','Posto médico','Esposende').
+servico(5,'Otorrinolaringologia','Hospital público','Porto').
+servico(6,'Oftalmologia','Clínica de Santa Madalena','Felgueiras').
+servico(7,'Urologia','Centro de Saude','Amares').
+servico(8,'Ginecologia','Clínica do Tubarao','Viana do Castelo').
 
 
 ato('12-01-2017',1,1,19).
-ato('13-01-2017',1,2,10).
-ato('14-01-2017',1,3,15).
-ato('15-01-2017',1,4,5).
-ato('16-01-2017',1,5,12).
-ato('17-01-2017',1,6,14).
-ato('15-01-2017',2,4,5).
-ato('16-01-2017',2,5,12).
-ato('17-01-2017',2,6,14).
-ato('17-01-2017',3,6,14).
+ato('13-01-2017',14,2,10).
+ato('14-01-2017',2,3,15).
+ato('15-01-2017',13,4,5).
+ato('16-01-2017',3,6,12).
+ato('17-01-2017',12,6,14).
+ato('15-01-2017',4,7,5).
+ato('16-01-2017',11,5,12).
+ato('17-01-2017',5,8,100).
+ato('24-01-2017',6,2,35).
+ato('15-01-2017',7,7,80).
+ato('19-01-2017',8,2,200).
+ato('11-01-2017',9,6,10).
+ato('25-01-2017',10,2,55).
+ato('26-01-2017',11,3,40).
+ato('29-01-2017',12,4,90).
+
 %----------------------------------------------------------------------------
 
 
