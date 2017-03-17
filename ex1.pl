@@ -174,16 +174,16 @@ removerAto(D,IDUT,IDSE) :- retrocesso(ato(D,IDUT,IDSE,C)).
 %----------------------------------------------------------------------------
 
 % Extensão do predicado utenteID: ID, Resultado -> {V,F}
-utenteID(ID,R) :- solucoes((ID,F,P,E),utente(ID,F,P,E),R).
+utenteID(ID,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 
 % Extensão do predicado utentesNome: Nome, Resultado -> {V,F}
-utentesNome(N,R) :- solucoes((ID,N,P,E),utente(ID,N,P,E),R).
+utentesNome(N,R) :- solucoes((ID,N,I,M)),utente(ID,N,I,M),R).
 
 % Extensão do predicado utentesIdade: Idade, Resultado -> {V,F}
-utentesIdade(I,R) :- solucoes((ID,N,I,E),utente(ID,N,I,E),R).
+utentesIdade(I,R) :- solucoes((ID,N,I,M)),utente(ID,N,I,M),R).
 
 % Extensão do predicado utentesCidade: Morada, Resultado -> {V,F}
-utentesCidade(M,R) :- solucoes((ID,N,P,M),utente(ID,N,P,M),R).
+utentesCidade(M,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado instituicoes: Resultado -> {V,F}
