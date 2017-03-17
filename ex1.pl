@@ -177,14 +177,6 @@ findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C),S),
 					findAto(T,W),
 					concat(S,W,R).
 
-%%outra versao(tem repetidos)
-utentesPorInstituicao( Instituicao, IdUt, Nome, Idade, Morada ) :-
-	servico( IdServ, Desc, Instituicao, Cidade ),
-	ato( Data, IdUt, IdServ, Custo ),
-	utente( IdUt, Nome, Idade, Morada ).
-
-ss(I,R) :- solucoes((IDU,Nome,Id,M), utentesPorInstituicao(I,IDU,Nome,Id,M),R).
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % Extensão do predicado 
 utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
