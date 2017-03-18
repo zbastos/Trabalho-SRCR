@@ -43,7 +43,7 @@ evolucao(F) :-
 	testar(L).
 
 retrocesso(F) :- 
-	solucoes(I,+F::I,L),
+	solucoes(I,-F::I,L),
 	testar(L),
 	remove(F).
 
@@ -85,7 +85,6 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 %----------------------------------------------------------------------------
 %								Invariantes
 %----------------------------------------------------------------------------
-
 % Invariante Estrutural:  não permitir a inserção de conhecimento repetido
 
 +utente(IDU,N,I,M) :: (solucoes(IDU,utente(IDU,_,_,_),S), 
@@ -100,18 +99,40 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 						comprimento(S,X), 
 						X == 1).
 
+% Id do utente e do servico tem de existir para inserir um ato médico
++ato(D,IDU,IDS,C) :: (utente(IDU,_,_,_), 
+					  servico(IDS,_,_,_)).
+
 % Conhecimento extra
 +medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
 						comprimento(S,X),
 						X == 1).
-%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-% Id do utente e do servico tem de existir para inserir um ato médico
-
-+ato(D,IDU,IDS,C) :: (utente(IDU,_,_,_), 
-					  servico(IDS,_,_,_)).
 %----------------------------------------------------------------------------
 
+-utente(IDU,N,I,M) :: (solucoes(IDU,utente(IDU,_,_,_),S), 
+					   comprimento(S,X), 
+					   X == 1).
+
+-utente(IDU,N,I,M) :: (solucoes(IDU,ato(_,IDU,_,_),S),
+					   comprimento(S,X),
+					   X==0).
+
+-servico(IDS,D,I,C) :: (solucoes(IDS,servico(IDS,_,_,_),S), 
+						comprimento(S,X), 
+						X == 1).
+
+-servico(IDS,D,I,C) :: (solucoes(IDS,ato(_,_,IDS,_),S),
+					   	comprimento(S,X),
+					   	X==0).
+
+-ato(D,IDU,IDS,C) :: (solucoes((D,IDU,IDS),ato(D,IDU,IDS,_),S),
+					  comprimento(S,X),
+					  X==1).
+
+-medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
+						comprimento(S,X),
+						X == 1).
 
 %----------------------------------------------------------------------------
 %						Base de conhecimento inicial
