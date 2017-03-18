@@ -170,14 +170,14 @@ servico(8,'Ginecologia','Clinica do Tubarao','Viana do Castelo').
 servico(9,'Ortopedia','Centro de Saude','Moledo').
 
 
-medico(1,'Eugénio Andrade',54,'Viana do Castelo','Ortopedia').
-medico(2,'Firmino Cunha',63,'Guimarães','Cardiologia').
-medico(3,'Jorge Costa',38,'Santo Tirso','Neurocirurgia').
-medico(4,'Bruno Hermenegildo',48,'Vila das Aves','Pediatria').
-medico(5,'Alberta Mendes',57,'Matosinhos','Otorrinolaringologia').
-medico(6,'Cristiano Soares',34,'Terras de Bouro','Oftalmologia').
-medico(7,'Rosalina Oliveira',49,'Vieira do Minho','Urologia').
-medico(8,'Carlos Mota',44,'Maia','Ginecologia').
+medico(1,'Dr. Eugénio Andrade',54,'Viana do Castelo','Ortopedia').
+medico(2,'Dr. Firmino Cunha',63,'Guimarães','Cardiologia').
+medico(3,'Dr. Jorge Costa',38,'Santo Tirso','Neurocirurgia').
+medico(4,'Dr. Bruno Hermenegildo',48,'Vila das Aves','Pediatria').
+medico(5,'Dra. Alberta Mendes',57,'Matosinhos','Otorrinolaringologia').
+medico(6,'Dr. Cristiano Soares',34,'Terras de Bouro','Oftalmologia').
+medico(7,'Dra. Rosalina Oliveira',49,'Vieira do Minho','Urologia').
+medico(8,'Dr. Carlos Mota',44,'Maia','Ginecologia').
 
 
 ato('12-01-2017',1,1,19,1).
