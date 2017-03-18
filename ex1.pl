@@ -388,7 +388,10 @@ custoMedioPorMedico(IDMED,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo,IDMED),S),
 						  	 	comprimento(S,L),
 						  	 	R is Sum/L.
 
-%medicosInstituicao(I,R) :- 
+medicosInstituicao(M,R) :- solucoes(IDS,ato(_,_,IDS,_,M),S),
+					  	   findInst(S,W),
+					  	   eliminarRepetidos(W,R).
+
 
 %instituicoesMedico(IDMED,R) :-
 
