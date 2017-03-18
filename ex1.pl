@@ -279,18 +279,18 @@ findUtentesServico([X|T],R) :- solucoes((X,N,I,M),utente(X,N,I,M),S),
 
 %--------------------------------- - - - - - - - - - -  -  -  -  - 
 % Extensão do predicado atoUtente: Id_Utente, Resultado -> {V,F}
-atoUtente(IDU,R) :- solucoes((em(D),de(IDU),servico(Des),custa(C),por(IDMED)),atoServicoInfo(D,IDU,IDS,C,IDMED,Des),R).
+atoUtente(IDU,R) :- solucoes((em(D),de(IDU),servico(Des),custa(C)),atoServicoInfo(D,IDU,IDS,C,IDMED,Des),R).
 
 % Extensão do predicado atoServico: Id_Serviço, Resultado -> {V,F}
-atoServico(IDS,R):- solucoes((em(D),id(IDS),servico(Des),custo(C),por(IDMED)),atoServicoInfo(D,IDU,IDS,C,IDMED,Des),R).
+atoServico(IDS,R):- solucoes((em(D),id(IDS),servico(Des),custo(C)),atoServicoInfo(D,IDU,IDS,C,IDMED,Des),R).
 
 % Extensão do predicado atoInstituicao: Instituição, Resultado -> {V,F}
 atoInstituicao(I,R) :- solucoes(IDS,servico(IDS,_,I,_),L),
 					   findAto(L,R).
 
 findAto([],[]).
-findAto([X],R) :- solucoes((D,IDU,X,C,IDMED),ato(D,IDU,X,C,IDMED),R).
-findAto([H|T],R) :- solucoes((D,IDU,H,C,IDMED),ato(D,IDU,H,C,IDMED),S),
+findAto([X],R) :- solucoes((D,IDU,X,C),ato(D,IDU,X,C,IDMED),R).
+findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C,IDMED),S),
 					findAto(T,W),
 					concat(S,W,R).
 
