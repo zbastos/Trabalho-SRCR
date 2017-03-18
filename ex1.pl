@@ -169,24 +169,32 @@ servico(7,'Urologia','Centro de Saude','Amares').
 servico(8,'Ginecologia','Clinica do Tubarao','Viana do Castelo').
 
 
-ato('12-01-2017',1,1,19,1).
-ato('13-01-2017',14,2,10,1).
-ato('14-01-2017',2,3,15,1).
-ato('15-01-2017',13,4,5,1).
-ato('16-01-2017',3,6,12,1).
-ato('17-01-2017',12,6,14,1).
-ato('15-01-2017',4,7,5,1).
-ato('16-01-2017',11,5,12,1).
-ato('17-01-2017',5,8,100,1).
-ato('24-01-2017',6,2,35,1).
-ato('15-01-2017',7,7,80,1).
-ato('19-01-2017',8,2,200,1).
-ato('11-01-2017',9,6,10,1).
-ato('25-01-2017',10,2,55,1).
-ato('26-01-2017',11,3,40,1).
-ato('29-01-2017',12,4,90,1).
+medico(1,'Eugénio Andrade',54,'Viana do Castelo','Ortopedia').
+medico(2,'Firmino Cunha',63,'Guimarães','Cardiologia').
+medico(3,'Jorge Costa',38,'Santo Tirso','Neurocirurgia').
+medico(4,'Bruno Hermenegildo',48,'Vila das Aves','Pediatria').
+medico(5,'Alberta Mendes',57,'Matosinhos','Otorrinolaringologia').
+medico(6,'Cristiano Soares',34,'Terras de Bouro','Oftalmologia').
+medico(7,'Rosalina Oliveira',49,'Vieira do Minho','Urologia').
+medico(8,'Carlos Mota',44,'Maia','Ginecologia').
 
-medico(1,'Dr.Andrade',54,'Viana do Castelo','Médico de Família').
+
+ato('12-01-2017',1,1,19,1).
+ato('13-01-2017',14,2,10,2).
+ato('14-01-2017',2,3,15,3).
+ato('15-01-2017',13,4,5,4).
+ato('16-01-2017',3,6,12,6).
+ato('17-01-2017',12,6,14,6).
+ato('15-01-2017',4,7,5,7).
+ato('16-01-2017',11,5,12,5).
+ato('17-01-2017',5,8,100,8).
+ato('24-01-2017',6,2,35,2).
+ato('15-01-2017',7,7,80,7).
+ato('19-01-2017',8,2,200,2).
+ato('11-01-2017',9,6,10,6).
+ato('25-01-2017',10,2,55,2).
+ato('26-01-2017',11,3,40,3).
+ato('29-01-2017',12,4,90,4).
 
 %----------------------------------------------------------------------------
 
