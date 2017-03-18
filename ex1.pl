@@ -201,7 +201,7 @@ removerServico(ID) :- retrocesso(servico(ID,D,I,C)).
 removerAto(D,IDUT,IDSE) :- retrocesso(ato(D,IDUT,IDSE,C)).
 
 % Extensão do predicado removerMedico: Id_Médico, Nome, Idade, Morada, Especialização -> {V,F}
-removerMedico(ID,N,I,M,E) :- retrocesso(medico(ID,N,I,M,E)).
+removerMedico(ID) :- retrocesso(medico(ID,N,I,M,E)).
 %----------------------------------------------------------------------------
 
 
