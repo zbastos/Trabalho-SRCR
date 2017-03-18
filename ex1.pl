@@ -85,8 +85,8 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 %----------------------------------------------------------------------------
 %								Invariantes
 %----------------------------------------------------------------------------
-% Invariante Estrutural:  não permitir a inserção de conhecimento repetido
 
+% não permitir a inserção de conhecimento repetido
 +utente(IDU,N,I,M) :: (solucoes(IDU,utente(IDU,_,_,_),S), 
 					   comprimento(S,X), 
 					   X == 1).
@@ -99,41 +99,45 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 						comprimento(S,X), 
 						X == 1).
 
-% Id do utente e do servico tem de existir para inserir um ato médico
-+ato(D,IDU,IDS,C,IDMED) :: (utente(IDU,_,_,_), 
-					  		servico(IDS,_,_,_),
-					  		medico(IDMED,_,_,_,_)).
-
-% Conhecimento extra
 +medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
 						comprimento(S,X),
 						X == 1).
 
-%----------------------------------------------------------------------------
+% Id do utente, do servico e do medico tem de existir para inserir um ato médico
++ato(D,IDU,IDS,C,IDMED) :: (utente(IDU,_,_,_), 
+					  		servico(IDS,D,_,_),
+					  		medico(IDMED,_,_,_,D)).
 
+%----------------------------------------------------------------------------
+% não permitir a remoção de conhecimento inexistente
 -utente(IDU,N,I,M) :: (solucoes(IDU,utente(IDU,_,_,_),S), 
 					   comprimento(S,X), 
 					   X == 1).
-
--utente(IDU,N,I,M) :: (solucoes(IDU,ato(_,IDU,_,_,_),S),
-					   comprimento(S,X),
-					   X==0).
 
 -servico(IDS,D,I,C) :: (solucoes(IDS,servico(IDS,_,_,_),S), 
 						comprimento(S,X), 
 						X == 1).
 
+-medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
+						comprimento(S,X),
+						X == 1).
+
+-ato(D,IDU,IDS,C,IDMED) :: (solucoes((D,IDU,IDS),ato(D,IDU,IDS,_,IDMED),S),
+					  		comprimento(S,X),
+					  		X==1).
+
+%não permitir a remoção de utentes, servicos e medicos caso existem atos associados a eles
+-utente(IDU,N,I,M) :: (solucoes(IDU,ato(_,IDU,_,_,_),S),
+					   comprimento(S,X),
+					   X==0).
+
 -servico(IDS,D,I,C) :: (solucoes(IDS,ato(_,_,IDS,_,_),S),
 					   	comprimento(S,X),
 					   	X==0).
 
--ato(D,IDU,IDS,C,IDMED) :: (solucoes((D,IDU,IDS),ato(D,IDU,IDS,_,IDMED),S),
-					  comprimento(S,X),
-					  X==1).
-
--medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
-						comprimento(S,X),
-						X == 1).
+-medico(ID,N,I,M,E) :: (solucoes(ID,ato(_,_,_,_,ID),S),
+					   	comprimento(S,X),
+					   	X==0).
 
 %----------------------------------------------------------------------------
 %						Base de conhecimento inicial
