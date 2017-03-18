@@ -95,7 +95,7 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 						comprimento(S,X), 
 						X == 1).
 
-+servico(IDS,D,I,C) :: (solucoes((D,I),servico(_,D,I,_),S), 
++servico(IDS,D,I,C) :: (solucoes((D,I),servico(_,D,I,C),S), 
 						comprimento(S,X), 
 						X == 1).
 
