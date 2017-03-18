@@ -161,15 +161,15 @@ utente(13,'Pedro Luis',53,'Largo do Bigode').
 utente(14,'Marco Cardoso',33,'Avenida Principal').
 
 
-servico(1,'Ortopedia','Centro de Saude','Braga').
-servico(2,'Cardiologia','Centro de Saude','Braga').
-servico(3,'Neurocirurgia','Hospital privado','Braga').
-servico(4,'Pediatria','Posto medico','Esposende').
-servico(5,'Otorrinolaringologia','Hospital publico','Porto').
+servico(1,'Ortopedia','Centro de Saude Santa Tecla','Braga').
+servico(2,'Cardiologia','Centro de Saude Santa Tecla','Braga').
+servico(3,'Neurocirurgia','Hospital Privado de Braga','Braga').
+servico(4,'Pediatria','Posto medico de Fao','Esposende').
+servico(5,'Otorrinolaringologia','Hospital Santa Maria','Porto').
 servico(6,'Oftalmologia','Clinica de Santa Madalena','Felgueiras').
-servico(7,'Urologia','Centro de Saude','Amares').
+servico(7,'Urologia','Casa de Saude de Caldelas','Amares').
 servico(8,'Ginecologia','Clinica do Tubarao','Viana do Castelo').
-servico(9,'Ortopedia','Centro de Saude','Moledo').
+servico(9,'Ortopedia','Espaço Saude Beirao Rendeiro ','Moledo').
 
 
 medico(1,'Dr. Eugénio Andrade',54,'Viana do Castelo','Ortopedia').
