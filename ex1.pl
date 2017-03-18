@@ -221,10 +221,10 @@ instituicoes(R) :- solucoes(I,servico(_,_,I,_),S),
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado servicoInstituicao: Instituição, Resultado -> {V,F}
-servicoInstituicao(I,R) :- solucoes((ID,D,I),servico(ID,D,I,C),R).
+servicoInstituicao(I,R) :- solucoes((ID,D,C),servico(ID,D,I,C),R).
 
 % Extensão do predicado servicoCidade: Cidade, Resultado -> {V,F}
-servicoCidade(C,R) :- solucoes((ID,D,C),servico(ID,D,I,C),R).
+servicoCidade(C,R) :- solucoes((ID,D,I),servico(ID,D,I,C),R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado instituicaoUtentes: Instituição, Resultado -> {V,F}
