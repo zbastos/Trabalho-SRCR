@@ -221,7 +221,7 @@ removerUtente(ID) :- retrocesso(utente(ID,N,I,M)).
 % Extensão do predicado removerServico: Id_Serviço, Descrição, Instituição, Cidade -> {V,F}
 removerServico(ID) :- retrocesso(servico(ID,D,I,C)).
 
-% Extensão do predicado removerAto: Data, Id_Utente, Id_Serviço -> {V,F}
+% Extensão do predicado removerAto: Data, Id_Utente, Id_Serviço, Id_Médico -> {V,F}
 removerAto(D,IDUT,IDSE,IDMED) :- retrocesso(ato(D,IDUT,IDSE,C,IDMED)).
 
 % Extensão do predicado removerMedico: Id_Médico, Nome, Idade, Morada, Especialização -> {V,F}
