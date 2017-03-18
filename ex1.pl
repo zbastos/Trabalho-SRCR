@@ -240,6 +240,7 @@ servicoUtentes(IDS,R) :- solucoes(IDU,ato(_,IDU,IDS,_),S),
 						 eRepetidos(S,W),
 						 findUtentesServico(W,R).						 
 
+findUtentesServico([],[]).
 findUtentesServico([X],R) :- solucoes((X,N,I,M),utente(X,N,I,M),R).
 findUtentesServico([X|T],R) :- solucoes((X,N,I,M),utente(X,N,I,M),S),
 							   findUtentesServico(T,W),
@@ -256,6 +257,7 @@ atoServico(IDS,R):- solucoes((em(D),id(IDS),servico(Des),custo(C)),atoServicoInf
 atoInstituicao(I,R) :- solucoes(IDS,servico(IDS,_,I,_),L),
 					   findAto(L,R).
 
+findAto([],[]).
 findAto([X],R) :- solucoes((D,IDU,X,C),ato(D,IDU,X,C),R).
 findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C),S),
 					findAto(T,W),
@@ -269,6 +271,7 @@ utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
 					  	   findInst(S,W),
 					  	   eRepetidos(W,R).
 
+findInst([],[]).
 findInst([X],R) :- solucoes(I,servico(X,D,I,C),R).
 findInst([H|T],R) :- solucoes(I,servico(H,D,I,C),S),
 					 findInst(T,W),
@@ -278,6 +281,7 @@ findInst([H|T],R) :- solucoes(I,servico(H,D,I,C),S),
 utenteServico(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
 					  findServico(S,R).
 
+findServico([],[]).
 findServico([X],R) :- solucoes((X,D,I,C),servico(X,D,I,C),R).
 findServico([H|T],R) :- solucoes((H,D,I,C),servico(H,D,I,C),S),
 						findServico(T,W),
@@ -301,6 +305,7 @@ custoPorInstituicao(I,R) :- solucoes(IDS,servico(IDS,D,I,C),S),
 							findCusto(S,W),
 							sum(W,R).
 
+findCusto([],[]).
 findCusto([X],R) :- solucoes(C,ato(_,_,X,C),R).
 findCusto([X|T],R) :- solucoes(C,ato(_,_,X,C),S),
 					  findCusto(T,W),
