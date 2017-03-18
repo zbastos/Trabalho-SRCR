@@ -22,7 +22,7 @@
 :- op( 900,xfy,'::' ). 
 :- dynamic utente/4. 		% (ID_Utente, Nome, Idade, Morada)
 :- dynamic servico/4.		% (ID_Serviço, Descrição, Instituição, Cidade).
-:- dynamic ato/4.			% (Data, ID_Utente, ID_Serviço, Custo).
+:- dynamic ato/5.			% (Data, ID_Utente, ID_Serviço, Custo, ID_Médico).
 :- dynamic medico/5.		% (ID_Médico, Nome, Idade, Morada, Especialização).
 
 %----------------------------------------------------------------------------
@@ -100,8 +100,9 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 						X == 1).
 
 % Id do utente e do servico tem de existir para inserir um ato médico
-+ato(D,IDU,IDS,C) :: (utente(IDU,_,_,_), 
-					  servico(IDS,_,_,_)).
++ato(D,IDU,IDS,C,IDMED) :: (utente(IDU,_,_,_), 
+					  		servico(IDS,_,_,_),
+					  		medico(IDMED,_,_,_,_)).
 
 % Conhecimento extra
 +medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
@@ -114,7 +115,7 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 					   comprimento(S,X), 
 					   X == 1).
 
--utente(IDU,N,I,M) :: (solucoes(IDU,ato(_,IDU,_,_),S),
+-utente(IDU,N,I,M) :: (solucoes(IDU,ato(_,IDU,_,_,_),S),
 					   comprimento(S,X),
 					   X==0).
 
@@ -122,11 +123,11 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 						comprimento(S,X), 
 						X == 1).
 
--servico(IDS,D,I,C) :: (solucoes(IDS,ato(_,_,IDS,_),S),
+-servico(IDS,D,I,C) :: (solucoes(IDS,ato(_,_,IDS,_,_),S),
 					   	comprimento(S,X),
 					   	X==0).
 
--ato(D,IDU,IDS,C) :: (solucoes((D,IDU,IDS),ato(D,IDU,IDS,_),S),
+-ato(D,IDU,IDS,C,IDMED) :: (solucoes((D,IDU,IDS),ato(D,IDU,IDS,_,IDMED),S),
 					  comprimento(S,X),
 					  X==1).
 
@@ -164,22 +165,24 @@ servico(7,'Urologia','Centro de Saude','Amares').
 servico(8,'Ginecologia','Clinica do Tubarao','Viana do Castelo').
 
 
-ato('12-01-2017',1,1,19).
-ato('13-01-2017',14,2,10).
-ato('14-01-2017',2,3,15).
-ato('15-01-2017',13,4,5).
-ato('16-01-2017',3,6,12).
-ato('17-01-2017',12,6,14).
-ato('15-01-2017',4,7,5).
-ato('16-01-2017',11,5,12).
-ato('17-01-2017',5,8,100).
-ato('24-01-2017',6,2,35).
-ato('15-01-2017',7,7,80).
-ato('19-01-2017',8,2,200).
-ato('11-01-2017',9,6,10).
-ato('25-01-2017',10,2,55).
-ato('26-01-2017',11,3,40).
-ato('29-01-2017',12,4,90).
+ato('12-01-2017',1,1,19,1).
+ato('13-01-2017',14,2,10,1).
+ato('14-01-2017',2,3,15,1).
+ato('15-01-2017',13,4,5,1).
+ato('16-01-2017',3,6,12,1).
+ato('17-01-2017',12,6,14,1).
+ato('15-01-2017',4,7,5,1).
+ato('16-01-2017',11,5,12,1).
+ato('17-01-2017',5,8,100,1).
+ato('24-01-2017',6,2,35,1).
+ato('15-01-2017',7,7,80,1).
+ato('19-01-2017',8,2,200,1).
+ato('11-01-2017',9,6,10,1).
+ato('25-01-2017',10,2,55,1).
+ato('26-01-2017',11,3,40,1).
+ato('29-01-2017',12,4,90,1).
+
+medico(1,'Dr.Andrade',54,'Viana do Castelo','Médico de Família').
 
 %----------------------------------------------------------------------------
 
@@ -197,8 +200,8 @@ registarUtente(IDU,N,I,M) :- evolucao(utente(IDU,N,I,M)).
 % Extensão do predicado registarServico: Id_Serviço, Descrição, Instituição, Cidade -> {V,F}
 registarServico(IDS,D,I,C) :- evolucao(servico(IDS,D,I,C)).
 
-% Extensão do predicado registarAto: Data, Id_Utente, Id_Serviço, Custo -> {V,F}
-registarAto(D,IDUT,IDSE,C) :- evolucao(ato(D,IDUT,IDSE,C)).
+% Extensão do predicado registarAto: Data, Id_Utente, Id_Serviço, Custo, Id_Médico -> {V,F}
+registarAto(D,IDUT,IDSE,C,IDMED) :- evolucao(ato(D,IDUT,IDSE,C,IDMED)).
 
 % Extensão do predicado registarMedico: Id_Médico, Nome, Idade, Morada, Especialização -> {V,F}
 registarMedico(ID,N,I,M,E) :- evolucao(medico(ID,N,I,M,E)).
@@ -219,7 +222,7 @@ removerUtente(ID) :- retrocesso(utente(ID,N,I,M)).
 removerServico(ID) :- retrocesso(servico(ID,D,I,C)).
 
 % Extensão do predicado removerAto: Data, Id_Utente, Id_Serviço -> {V,F}
-removerAto(D,IDUT,IDSE) :- retrocesso(ato(D,IDUT,IDSE,C)).
+removerAto(D,IDUT,IDSE,IDMED) :- retrocesso(ato(D,IDUT,IDSE,C,IDMED)).
 
 % Extensão do predicado removerMedico: Id_Médico, Nome, Idade, Morada, Especialização -> {V,F}
 removerMedico(ID) :- retrocesso(medico(ID,N,I,M,E)).
@@ -261,10 +264,10 @@ instituicaoUtentes(I,R) :- solucoes(IDU,institUtente(I,IDU),S),
 						   findUtentesServico(W,R).						   
 
 institUtente(I,IDU) :- servico(IDS,D,I,C), 
-					   ato(Data,IDU,IDS,Custo).			 
+					   ato(Data,IDU,IDS,Custo,IDMED).			 
 
 % Extensão do predicado servicoUtentes: Servico, Resultado -> {V,F}
-servicoUtentes(IDS,R) :- solucoes(IDU,ato(_,IDU,IDS,_),S),
+servicoUtentes(IDS,R) :- solucoes(IDU,ato(_,IDU,IDS,_,_),S),
 						 eliminarRepetidos(S,W),
 						 findUtentesServico(W,R).						 
 
@@ -276,26 +279,26 @@ findUtentesServico([X|T],R) :- solucoes((X,N,I,M),utente(X,N,I,M),S),
 
 %--------------------------------- - - - - - - - - - -  -  -  -  - 
 % Extensão do predicado atoUtente: Id_Utente, Resultado -> {V,F}
-atoUtente(IDU,R) :- solucoes((em(D),de(IDU),servico(Des),custa(C)),atoServicoInfo(D,IDU,IDS,C,Des),R).
+atoUtente(IDU,R) :- solucoes((em(D),de(IDU),servico(Des),custa(C),por(IDMED)),atoServicoInfo(D,IDU,IDS,C,IDMED,Des),R).
 
 % Extensão do predicado atoServico: Id_Serviço, Resultado -> {V,F}
-atoServico(IDS,R):- solucoes((em(D),id(IDS),servico(Des),custo(C)),atoServicoInfo(D,IDU,IDS,C,Des),R).
+atoServico(IDS,R):- solucoes((em(D),id(IDS),servico(Des),custo(C),por(IDMED)),atoServicoInfo(D,IDU,IDS,C,IDMED,Des),R).
 
 % Extensão do predicado atoInstituicao: Instituição, Resultado -> {V,F}
 atoInstituicao(I,R) :- solucoes(IDS,servico(IDS,_,I,_),L),
 					   findAto(L,R).
 
 findAto([],[]).
-findAto([X],R) :- solucoes((D,IDU,X,C),ato(D,IDU,X,C),R).
-findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C),S),
+findAto([X],R) :- solucoes((D,IDU,X,C,IDMED),ato(D,IDU,X,C,IDMED),R).
+findAto([H|T],R) :- solucoes((D,IDU,H,C,IDMED),ato(D,IDU,H,C,IDMED),S),
 					findAto(T,W),
 					concat(S,W,R).
 
-atoServicoInfo(D,IDU,IDS,C,Des) :- ato(D,IDU,IDS,C), servico(IDS,Des,Inst,Cidade).
+atoServicoInfo(D,IDU,IDS,C,IDMED,Des) :- ato(D,IDU,IDS,C,IDMED), servico(IDS,Des,Inst,Cidade).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado utenteInstituicoes: Id_Utente, Resultado -> {V,F}
-utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
+utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_,_),S),
 					  	   findInst(S,W),
 					  	   eliminarRepetidos(W,R).
 
@@ -306,7 +309,7 @@ findInst([H|T],R) :- solucoes(I,servico(H,D,I,C),S),
 					 concat(S,W,R).
 
 % Extensão do predicado utenteServico: Id_Serviço, Resultado -> {V,F}
-utenteServico(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
+utenteServico(U,R) :- solucoes(IDS,ato(_,U,IDS,_,_),S),
 					  findServico(S,R).
 
 findServico([],[]).
@@ -317,15 +320,15 @@ findServico([H|T],R) :- solucoes((H,D,I,C),servico(H,D,I,C),S),
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado custoPorUtente: Id_Utente, Resultado -> {V,F}
-custoPorUtente(IDU,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
+custoPorUtente(IDU,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo,IDMED),S),
 						 sum(S,R).
 						
 % Extensão do predicado custoPorServico: Id_Serviço, Resultado -> {V,F}
-custoPorServico(IDS,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo),S),
+custoPorServico(IDS,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo,IDMED),S),
 						  sum(S,R).
 
 % Extensão do predicado custoPorData: Data, Resultado -> {V,F}
-custoPorData(Data,R) :- solucoes(Custo,ato(Data,IDU,IDS,Custo),S),
+custoPorData(Data,R) :- solucoes(Custo,ato(Data,IDU,IDS,Custo,IDMED),S),
 						sum(S,R).
 
 % Extensão do predicado custoPorInstituicao: Instituição, Resultado -> {V,F}
@@ -334,8 +337,8 @@ custoPorInstituicao(I,R) :- solucoes(IDS,servico(IDS,D,I,C),S),
 							sum(W,R).
 
 findCusto([],[]).
-findCusto([X],R) :- solucoes(C,ato(_,_,X,C),R).
-findCusto([X|T],R) :- solucoes(C,ato(_,_,X,C),S),
+findCusto([X],R) :- solucoes(C,ato(_,_,X,C,_),R).
+findCusto([X|T],R) :- solucoes(C,ato(_,_,X,C,_),S),
 					  findCusto(T,W),
 					  concat(S,W,R).
 %----------------------------------------------------------------------------
