@@ -167,6 +167,7 @@ servico(5,'Otorrinolaringologia','Hospital publico','Porto').
 servico(6,'Oftalmologia','Clinica de Santa Madalena','Felgueiras').
 servico(7,'Urologia','Centro de Saude','Amares').
 servico(8,'Ginecologia','Clinica do Tubarao','Viana do Castelo').
+servico(9,'Ortopedia','Centro de Saude','Moledo').
 
 
 medico(1,'Eugénio Andrade',54,'Viana do Castelo','Ortopedia').
@@ -195,6 +196,7 @@ ato('11-01-2017',9,6,10,6).
 ato('25-01-2017',10,2,55,2).
 ato('26-01-2017',11,3,40,3).
 ato('29-01-2017',12,4,90,4).
+ato('31-01-2017',13,9,50,1).
 
 %----------------------------------------------------------------------------
 
