@@ -169,11 +169,11 @@ servico(5,'Otorrinolaringologia','Hospital Santa Maria','Porto').
 servico(6,'Oftalmologia','Clinica de Santa Madalena','Felgueiras').
 servico(7,'Urologia','Casa de Saude de Caldelas','Amares').
 servico(8,'Ginecologia','Clinica do Tubarao','Viana do Castelo').
-servico(9,'Ortopedia','Espaço Saude Beirao Rendeiro ','Moledo').
+servico(9,'Ortopedia','Espaco Saude Beirao Rendeiro','Moledo').
 
 
-medico(1,'Dr. Eugénio Andrade',54,'Viana do Castelo','Ortopedia').
-medico(2,'Dr. Firmino Cunha',63,'Guimarães','Cardiologia').
+medico(1,'Dr. Eugenio Andrade',54,'Viana do Castelo','Ortopedia').
+medico(2,'Dr. Firmino Cunha',63,'Guimaraes','Cardiologia').
 medico(3,'Dr. Jorge Costa',38,'Santo Tirso','Neurocirurgia').
 medico(4,'Dr. Bruno Hermenegildo',48,'Vila das Aves','Pediatria').
 medico(5,'Dra. Alberta Mendes',57,'Matosinhos','Otorrinolaringologia').
@@ -393,5 +393,16 @@ medicosInstituicao(M,R) :- solucoes(IDS,ato(_,_,IDS,_,M),S),
 					  	   eliminarRepetidos(W,R).
 
 
-%instituicoesMedico(IDMED,R) :-
+instituicoesMedico(I,R) :- solucoes(IDMED,institMed(I,IDMED),S),
+							   eliminarRepetidos(S,W),
+							   findMedicosServico(W,R).					   
+
+institMed(I,IDMED) :- servico(IDS,D,I,C), 
+					ato(Data,IDU,IDS,Custo,IDMED).
+
+findMedicosServico([],[]).
+findMedicosServico([X],R) :- solucoes((X,N,I,M,E),medico(X,N,I,M,E),R).
+findMedicosServico([X|T],R) :- solucoes((X,N,I,M,E),medico(X,N,I,M,E),S),
+							   findMedicosServico(T,W),
+							   concat(S,W,R).
 
