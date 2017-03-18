@@ -20,9 +20,10 @@
 % SICStus PROLOG: definições iniciais
 
 :- op( 900,xfy,'::' ). 
-:- dynamic utente/4.
-:- dynamic servico/4.
-:- dynamic ato/4.
+:- dynamic utente/4. 		% (ID_Utente, Nome, Idade, Morada)
+:- dynamic servico/4.		% (ID_Serviço, Descrição, Instituição, Cidade).
+:- dynamic ato/4.			% (Data, ID_Utente, ID_Serviço, Custo).
+:- dynamic medico/5.		% (ID_Médico, Nome, Idade, Morada, Especialização).
 
 %----------------------------------------------------------------------------
 % Extensão do predicado que permite a evolucao/retrocesso do conhecimento 
@@ -99,10 +100,10 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 						comprimento(S,X), 
 						X == 1).
 
-+ato(D,IDUT,IDSE,C) :: (solucoes((D,IDUT,IDSE), ato(D,IDUT,IDSE,_),S), 
-						comprimento(S,X), 
+% Conhecimento extra
++medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
+						comprimento(S,X),
 						X == 1).
-
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Id do utente e do servico tem de existir para inserir um ato médico
@@ -177,6 +178,9 @@ registarServico(IDS,D,I,C) :- evolucao(servico(IDS,D,I,C)).
 
 % Extensão do predicado registarAto: Data, Id_Utente, Id_Serviço, Custo -> {V,F}
 registarAto(D,IDUT,IDSE,C) :- evolucao(ato(D,IDUT,IDSE,C)).
+
+% Extensão do predicado registarMedico: Id_Médico, Nome, Idade, Morada, Especialização -> {V,F}
+registarMedico(ID,N,I,M,E) :- evolucao(medico(ID,N,I,M,E)).
 %----------------------------------------------------------------------------
 
 
@@ -195,6 +199,9 @@ removerServico(ID) :- retrocesso(servico(ID,D,I,C)).
 
 % Extensão do predicado removerAto: Data, Id_Utente, Id_Serviço -> {V,F}
 removerAto(D,IDUT,IDSE) :- retrocesso(ato(D,IDUT,IDSE,C)).
+
+% Extensão do predicado removerMedico: Id_Médico, Nome, Idade, Morada, Especialização -> {V,F}
+removerMedico(ID,N,I,M,E) :- retrocesso(medico(ID,N,I,M,E)).
 %----------------------------------------------------------------------------
 
 
@@ -311,3 +318,4 @@ findCusto([X|T],R) :- solucoes(C,ato(_,_,X,C),S),
 					  findCusto(T,W),
 					  concat(S,W,R).
 %----------------------------------------------------------------------------
+
