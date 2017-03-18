@@ -347,3 +347,36 @@ findCusto([X|T],R) :- solucoes(C,ato(_,_,X,C,_),S),
 					  concat(S,W,R).
 %----------------------------------------------------------------------------
 
+
+%----------------------------------------------------------------------------
+%						Listagem de informação (Extra)
+%----------------------------------------------------------------------------
+
+% Extensão do predicado medicoID: ID, Resultado -> {V,F}
+medicoID(ID,R) :- solucoes((ID,N,I,M,E),medico(ID,N,I,M,E),R).
+
+% Extensão do predicado medicosNome: Nome, Resultado -> {V,F}
+medicosNome(N,R) :- solucoes((ID,N,I,M,E),medico(ID,N,I,M,E),R).
+
+% Extensão do predicado medicosIdade: Idade, Resultado -> {V,F}
+medicosIdade(I,R) :- solucoes((ID,N,I,M,E),medico(ID,N,I,M,E),R).
+
+% Extensão do predicado medicosMorada: Morada, Resultado -> {V,F}
+medicosMorada(M,R) :- solucoes((ID,N,I,M,E),medico(ID,N,I,M,E),R).
+
+% Extensão do predicado medicosEspecialização: Especialização, Resultado -> {V,F}
+medicosEspecializacao(E,R) :- solucoes((ID,N,I,M,E),medico(ID,N,I,M,E),R).
+
+% Extensão do predicado atosMedico: Id_Médico, Resultado -> {V,F}
+atosMedico(IDMED,R) :- solucoes((em(D),id_utente(IDU),servico(Des),custa(C)),atoServicoInfo(D,IDU,IDS,C,IDMED,Des),R).
+
+% Extensão do predicado custoMedioPorAto: Id_Médico, Resultado -> {V,F}
+custoMedioPorMedico(IDMED,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo,IDMED),S),
+						  	 	sum(S,Sum),
+						  	 	comprimento(S,L),
+						  	 	R is Sum/L.
+
+%medicosInstituicao(I,R) :- 
+
+%instituicoesMedico(IDMED,R) :-
+
