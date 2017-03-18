@@ -319,8 +319,8 @@ utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_,_),S),
 					  	   eliminarRepetidos(W,R).
 
 findInst([],[]).
-findInst([X],R) :- solucoes(I,servico(X,D,I,C),R).
-findInst([H|T],R) :- solucoes(I,servico(H,D,I,C),S),
+findInst([X],R) :- solucoes((I,C),servico(X,D,I,C),R).
+findInst([H|T],R) :- solucoes((I,C),servico(H,D,I,C),S),
 					 findInst(T,W),
 					 concat(S,W,R).
 
