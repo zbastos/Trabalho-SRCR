@@ -67,9 +67,9 @@ comprimento([H|T],N) :-
 	N is N1+1.
 
 % Extensão do predicado eliminarRepetidos: Lista, Resultado -> {V,F}
-eRepetidos([], []) .
-eRepetidos([H|T], Res) :- eliminarElemento(T, H, E), 
-						  eRepetidos(E, R), 
+eliminarRepetidos([], []) .
+eliminarRepetidos([H|T], Res) :- eliminarElemento(T, H, E), 
+						  eliminarRepetidos(E, R), 
 						  Res = [H|R].
 
 % Extensão do predicado eliminarElemento: Lista, Elemento, Resultado -> {V,F}
@@ -217,7 +217,7 @@ utentesMorada(M,R) :- solucoes((ID,N,I,M),utente(ID,N,I,M),R).
 
 % Extensão do predicado instituicoes: Resultado -> {V,F}
 instituicoes(R) :- solucoes(I,servico(_,_,I,_),S),
-				   eRepetidos(S,R).
+				   eliminarRepetidos(S,R).
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Extensão do predicado servicoInstituicao: Instituição, Resultado -> {V,F}
@@ -229,7 +229,7 @@ servicoCidade(C,R) :- solucoes((ID,D,C),servico(ID,D,I,C),R).
 
 % Extensão do predicado instituicaoUtentes: Instituição, Resultado -> {V,F}
 instituicaoUtentes(I,R) :- solucoes(IDU,institUtente(I,IDU),S),
-						   eRepetidos(S,W),
+						   eliminarRepetidos(S,W),
 						   findUtentesServico(W,R).						   
 
 institUtente(I,IDU) :- servico(IDS,D,I,C), 
@@ -237,7 +237,7 @@ institUtente(I,IDU) :- servico(IDS,D,I,C),
 
 % Extensão do predicado servicoUtentes: Servico, Resultado -> {V,F}
 servicoUtentes(IDS,R) :- solucoes(IDU,ato(_,IDU,IDS,_),S),
-						 eRepetidos(S,W),
+						 eliminarRepetidos(S,W),
 						 findUtentesServico(W,R).						 
 
 findUtentesServico([],[]).
@@ -269,7 +269,7 @@ atoServicoInfo(D,IDU,IDS,C,Des) :- ato(D,IDU,IDS,C), servico(IDS,Des,Inst,Cidade
 % Extensão do predicado utenteInstituicoes: Id_Utente, Resultado -> {V,F}
 utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_),S),
 					  	   findInst(S,W),
-					  	   eRepetidos(W,R).
+					  	   eliminarRepetidos(W,R).
 
 findInst([],[]).
 findInst([X],R) :- solucoes(I,servico(X,D,I,C),R).
