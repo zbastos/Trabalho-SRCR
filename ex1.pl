@@ -87,6 +87,7 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 %----------------------------------------------------------------------------
 
 % não permitir a inserção de conhecimento repetido
+
 +utente(IDU,N,I,M) :: (solucoes(IDU,utente(IDU,_,_,_),S), 
 					   comprimento(S,X), 
 					   X == 1).
@@ -95,13 +96,14 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 						comprimento(S,X), 
 						X == 1).
 
++medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
+						comprimento(S,X),
+						X == 1).
+
 +servico(IDS,D,I,C) :: (solucoes((D,I),servico(_,D,I,C),S), 
 						comprimento(S,X), 
 						X == 1).
 
-+medico(ID,N,I,M,E) :: (solucoes(ID,medico(ID,_,_,_,_),S),
-						comprimento(S,X),
-						X == 1).
 
 % Id do utente, do servico e do medico tem de existir para inserir um ato médico
 +ato(D,IDU,IDS,C,IDMED) :: (utente(IDU,_,_,_), 
