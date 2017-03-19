@@ -305,8 +305,8 @@ atoInstituicao(I,R) :- solucoes(IDS,servico(IDS,_,I,_),L),
 					   findAto(L,R).
 
 findAto([],[]).
-findAto([X],R) :- solucoes((D,IDU,X,C),ato(D,IDU,X,C,IDMED),R).
-findAto([H|T],R) :- solucoes((D,IDU,H,C),ato(D,IDU,H,C,IDMED),S),
+findAto([X],R) :- solucoes((em(D),de(IDU),idServico(X),custo(C)),ato(D,IDU,X,C,IDMED),R).
+findAto([H|T],R) :- solucoes((em(D),de(IDU),idServico(H),custo(C)),ato(D,IDU,H,C,IDMED),S),
 					findAto(T,W),
 					concat(S,W,R).
 
@@ -315,8 +315,8 @@ atoServicoInfo(D,IDU,IDS,C,IDMED,Des) :- ato(D,IDU,IDS,C,IDMED), servico(IDS,Des
 
 % Extensão do predicado utenteInstituicoes: Id_Utente, Resultado -> {V,F}
 utenteInstituicoes(U,R) :- solucoes(IDS,ato(_,U,IDS,_,_),S),
-					  	   findInst(S,W),
-					  	   eliminarRepetidos(W,R).
+					  	   eliminarRepetidos(S,W),
+					  	   findInst(W,R).
 
 findInst([],[]).
 findInst([X],R) :- solucoes((I,C),servico(X,D,I,C),R).
@@ -326,7 +326,8 @@ findInst([H|T],R) :- solucoes((I,C),servico(H,D,I,C),S),
 
 % Extensão do predicado utenteServico: Id_Serviço, Resultado -> {V,F}
 utenteServico(U,R) :- solucoes(IDS,ato(_,U,IDS,_,_),S),
-					  findServico(S,R).
+					  eliminarRepetidos(S,W),
+					  findServico(W,R).
 
 findServico([],[]).
 findServico([X],R) :- solucoes((X,D,I,C),servico(X,D,I,C),R).
