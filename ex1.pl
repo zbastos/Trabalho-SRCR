@@ -389,12 +389,13 @@ custoMedioPorMedico(IDMED,R) :- solucoes(Custo,ato(D,IDU,IDS,Custo,IDMED),S),
 						  	 	comprimento(S,L),
 						  	 	R is Sum/L.
 
-medicosInstituicao(M,R) :- solucoes(IDS,ato(_,_,IDS,_,M),S),
+% Extensão do predicado instituicoesMedico: Id_Médico, Resultado -> {V,F}
+instituicoesMedico(M,R) :- solucoes(IDS,ato(_,_,IDS,_,M),S),
 					  	   findInst(S,W),
 					  	   eliminarRepetidos(W,R).
 
-
-instituicoesMedico(I,R) :- solucoes(IDMED,institMed(I,IDMED),S),
+% Extensão do predicado medicosInstituicao: Instituição, Resultado -> {V,F}
+medicosInstituicao(I,R) :- solucoes(IDMED,institMed(I,IDMED),S),
 							   eliminarRepetidos(S,W),
 							   findMedicosServico(W,R).					   
 
