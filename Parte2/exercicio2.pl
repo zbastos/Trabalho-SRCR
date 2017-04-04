@@ -233,21 +233,14 @@ ato('14-02-2017',desconhecido,6,85,6).
 ato('15-02-2017',6,7,X,7) :- cercade(X,25).
 cercade(X,Y) :- A is 0,9*Y, B is 1,1*Y, X>=A, X=<B.
 
+%sabe-se que este serviço não se encontra disponível
+-servico(10,'Dermatologia','Espaco Saude Beirao Rendeiro','Moledo').
+
 
 %se calhar agora metia-se uma cena :- dynamic data/3. p.e.: data(12,01,1996) para melhorar a inserção do conhecimento imperfeito
 
-%nao sei se é suposto adicionar isto
 
-
-demo(Q,verdadeiro) :- Q.
-demo(Q,falso) :- -Q.
-demo(Q,desconhecido) :- nao(Q), nao(-Q).
-
-nao( Questao ) :-
-    Questao, !, fail.
-nao( Questao ).
 %----------------------------------------------------------------------------
--utente(Id,Nome,Idade,Morada) :- nao(utente(Id,Nome,Idade,Morada)), nao(excecao(utente(Id,Nome,Idade,Morada))).
 
 excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(desconhecido,IDUT,IDSE,C,IDMED).
 excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,desconhecido,IDSE,C,IDMED).
@@ -261,6 +254,26 @@ excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,interdito,C,IDMED).
 excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,interdito,IDMED).
 excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,interdito).
 
+-ato(D,IDUT,IDSE,C,IDMED) :- nao(ato(D,IDUT,IDSE,C,IDMED)),
+								nao(excepcao(ato(D,IDUT,IDSE,C,IDMED))).
+
+-utente(IDU,N,I,M) :- nao(utente(IDU,N,I,M)),
+						nao(excepcao(utente(IDU,N,I,M))).
+
+-medico(ID,N,I,M,E) :- nao(medico(ID,N,I,M,E)),
+						nao(excepcao(medico(ID,N,I,M,E))).
+
+
+-servico(IDS,D,I,C) :- nao(servico(IDS,D,I,C)),
+						nao(excepcao(servico(IDS,D,I,C))).
+
+demo(Q,verdadeiro) :- Q.
+demo(Q,falso) :- -Q.
+demo(Q,desconhecido) :- nao(Q), nao(-Q).
+
+nao( Questao ) :-
+    Questao, !, fail.
+nao( Questao ).
 %----------------------------------------------------------------------------
 %									Registar
 %----------------------------------------------------------------------------
