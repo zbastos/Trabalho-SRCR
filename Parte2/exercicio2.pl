@@ -205,18 +205,18 @@ ato('31-01-2017',13,9,50,1).
 %----------------------------------------------------------------------------
 
 %utente mora numa destas 3 opçoes
-excepcao(utente(15,'Zeferino Costa',40,'Rua do Dente')).
-excepcao(utente(15,'Zeferino Costa',40,'Largo do Dente')).
-excepcao(utente(15,'Zeferino Costa',40,'Avenida do Dente')).
+excecao(utente(15,'Zeferino Costa',40,'Rua do Dente')).
+excecao(utente(15,'Zeferino Costa',40,'Largo do Dente')).
+excecao(utente(15,'Zeferino Costa',40,'Avenida do Dente')).
 
 %sabe-se que o custo do ato foi superior a 50
-excepcao(ato('04-02-2017',1,5,X,5)) :-  X>=50.
+excecao(ato('04-02-2017',1,5,X,5)) :-  X>=50.
 
 %não se sabe o médico que fez o ato
 ato('08-02-2017',9,desconhecido,75,1).
 
 %idade do médico entre 2 valores
-excepcao(medico(9,'Dr. Antonio Zequinha',X,'Estoril','Cirurgia')) :- X>=27, X=<37.
+excecao(medico(9,'Dr. Antonio Zequinha',X,'Estoril','Cirurgia')) :- X>=27, X=<37.
 
 %Impossível saber o custo deste ato
 ato('12-02-2017',3,5,interdito,5).
@@ -227,35 +227,39 @@ nulo(interdito).
 
 %Neste ato apenas se sabe que não foi o utente com Id=2 
 ato('14-02-2017',desconhecido,6,85,6).
--ato('14-02-2017',2,6,85,6) 
+-ato('14-02-2017',2,6,85,6).
 
 %Neste ato sabe-se que o custo foi cerca de 25.
 ato('15-02-2017',6,7,X,7) :- cercade(X,25).
-cercade(X,Y) :- A is 0.9*Y, B is 1.1*Y, X>=A, X=<B.
+cercade(X,Y) :- A is 0,9*Y, B is 1,1*Y, X>=A, X=<B.
 
 
 %se calhar agora metia-se uma cena :- dynamic data/3. p.e.: data(12,01,1996) para melhorar a inserção do conhecimento imperfeito
 
 %nao sei se é suposto adicionar isto
-%demo(Q,verdadeiro) :- Q.
-%demo(Q,falso) :- -Q.
-%demo(Q,desconhecido) :- nao(Q), nao(-Q).
 
 
+demo(Q,verdadeiro) :- Q.
+demo(Q,falso) :- -Q.
+demo(Q,desconhecido) :- nao(Q), nao(-Q).
+
+nao( Questao ) :-
+    Questao, !, fail.
+nao( Questao ).
 %----------------------------------------------------------------------------
--utente(Id,Nome,Idade,Morada) :- nao(utente(Id,Nome,Idade,Morada)), nao(excepcao(utente(Id,Nome,Idade,Morada))).
+-utente(Id,Nome,Idade,Morada) :- nao(utente(Id,Nome,Idade,Morada)), nao(excecao(utente(Id,Nome,Idade,Morada))).
 
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(desconhecido,IDUT,IDSE,C,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,desconhecido,IDSE,C,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,desconhecido,C,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,desconhecido,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,desconhecido).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(desconhecido,IDUT,IDSE,C,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,desconhecido,IDSE,C,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,desconhecido,C,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,desconhecido,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,desconhecido).
 
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(interdito,IDUT,IDSE,C,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,interdito,IDSE,C,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,interdito,C,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,interdito,IDMED).
-excepcao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,interdito).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(interdito,IDUT,IDSE,C,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,interdito,IDSE,C,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,interdito,C,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,interdito,IDMED).
+excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,interdito).
 
 %----------------------------------------------------------------------------
 %									Registar
