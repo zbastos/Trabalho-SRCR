@@ -1,6 +1,6 @@
 %----------------------------------------------------------------------------
 % SIST. REPR. CONHECIMENTO E RACIOCINIO - MiEI
-% Trabalho de grupo 1º exercício
+% Trabalho de grupo 2º exercício
 % Grupo de trabalho nº10 
 
 % A74696 José Diogo Paiva Bastos
