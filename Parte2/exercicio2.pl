@@ -230,7 +230,7 @@ nulo(interdito).
 ato(data(14,02,2017),desconhecido,6,85,6).
 -ato(data(14,02,2017),2,6,85,6).
 
-%Neste ato sabe-se que o custo foi cerca de 25.
+%Neste ato sabe-se que o custo foi cerca de 25. ACHO QUE ESTÁ MAL ?????????
 ato(data(15,02,2017),6,7,X,7) :- cercade(X,25).
 cercade(X,Y) :- A is 0,9*Y, B is 1,1*Y, X>=A, X=<B.
 
@@ -271,6 +271,9 @@ excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,interdito).
 
 -servico(IDS,D,I,C) :- nao(servico(IDS,D,I,C)),
 						nao(excepcao(servico(IDS,D,I,C))).
+
+
+%+ato(D,IDUT,IDSE,C,IDMED)::(Med \= desconhecido, nao(nulo(Med))).
 
 demo(Q,verdadeiro) :- Q.
 demo(Q,falso) :- -Q.
