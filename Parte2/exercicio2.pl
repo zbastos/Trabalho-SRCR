@@ -24,6 +24,7 @@
 :- dynamic servico/4.		% (ID_Serviço, Descrição, Instituição, Cidade).
 :- dynamic ato/5.			% (Data, ID_Utente, ID_Serviço, Custo, ID_Médico).
 :- dynamic medico/5.		% (ID_Médico, Nome, Idade, Morada, Especialização).
+:- dynamic data/3.          % (Dia,Mês,Ano)
 
 %----------------------------------------------------------------------------
 % Extensão do predicado que permite a evolucao/retrocesso do conhecimento 
@@ -182,23 +183,23 @@ medico(7,'Dra. Rosalina Oliveira',49,'Vieira do Minho','Urologia').
 medico(8,'Dr. Carlos Mota',44,'Maia','Ginecologia').
 
 
-ato('12-01-2017',1,1,19,1).
-ato('13-01-2017',14,2,10,2).
-ato('14-01-2017',2,3,15,3).
-ato('15-01-2017',13,4,5,4).
-ato('16-01-2017',3,6,12,6).
-ato('17-01-2017',12,6,14,6).
-ato('15-01-2017',4,7,5,7).
-ato('16-01-2017',11,5,12,5).
-ato('17-01-2017',5,8,100,8).
-ato('24-01-2017',6,2,35,2).
-ato('15-01-2017',7,7,80,7).
-ato('19-01-2017',8,2,200,2).
-ato('11-01-2017',9,6,10,6).
-ato('25-01-2017',10,2,55,2).
-ato('26-01-2017',11,3,40,3).
-ato('29-01-2017',12,4,90,4).
-ato('31-01-2017',13,9,50,1).
+ato(data(12,01,2017),1,1,19,1).
+ato(data(13,01,2017),14,2,10,2).
+ato(data(14,01,2017),2,3,15,3).
+ato(data(15,01,2017),13,4,5,4).
+ato(data(16,01,2017),3,6,12,6).
+ato(data(17,01,2017),12,6,14,6).
+ato(data(15,01,2017),4,7,5,7).
+ato(data(16,01,2017),11,5,12,5).
+ato(data(17,01,2017),5,8,100,8).
+ato(data(24,01,2017),6,2,35,2).
+ato(data(15,01,2017),7,7,80,7).
+ato(data(19,01,2017),8,2,200,2).
+ato(data(11,01,2017),9,6,10,6).
+ato(data(25,01,2017),10,2,55,2).
+ato(data(26,01,2017),11,3,40,3).
+ato(data(29,01,2017),12,4,90,4).
+ato(data(31,01,2017),13,9,50,1).
 
 %----------------------------------------------------------------------------
 %						Conhecimento imperfeito
@@ -210,38 +211,42 @@ excecao(utente(15,'Zeferino Costa',40,'Largo do Dente')).
 excecao(utente(15,'Zeferino Costa',40,'Avenida do Dente')).
 
 %sabe-se que o custo do ato foi superior a 50
-excecao(ato('04-02-2017',1,5,X,5)) :-  X>=50.
+excecao(ato(data(04,02,2017),1,5,X,5)) :-  X>=50.
 
 %não se sabe o médico que fez o ato
-ato('08-02-2017',9,desconhecido,75,1).
+ato(data(08,02,2017),9,desconhecido,75,1).
 
 %idade do médico entre 2 valores
 excecao(medico(9,'Dr. Antonio Zequinha',X,'Estoril','Cirurgia')) :- X>=27, X=<37.
 
 %Impossível saber o custo deste ato
-ato('12-02-2017',3,5,interdito,5).
+ato(data(12,02,2017),3,5,interdito,5).
 nulo(interdito).
 
-+ato(D,IDUT,IDSE,C,IDMED) :: (solucoes(C,(ato('12-02-2017',3,5,C,5),nao(nulo(C))),S), 
++ato(D,IDUT,IDSE,C,IDMED) :: (solucoes(C,(ato(data(12,02,2017),3,5,C,5),nao(nulo(C))),S), 
 								comprimento(S,N), N == 0).
 
 %Neste ato apenas se sabe que não foi o utente com Id=2 
-ato('14-02-2017',desconhecido,6,85,6).
--ato('14-02-2017',2,6,85,6).
+ato(data(14,02,2017),desconhecido,6,85,6).
+-ato(data(14,02,2017),2,6,85,6).
 
 %Neste ato sabe-se que o custo foi cerca de 25.
-ato('15-02-2017',6,7,X,7) :- cercade(X,25).
+ato(data(15,02,2017),6,7,X,7) :- cercade(X,25).
 cercade(X,Y) :- A is 0,9*Y, B is 1,1*Y, X>=A, X=<B.
 
 %sabe-se que este serviço não se encontra disponível
 -servico(10,'Dermatologia','Espaco Saude Beirao Rendeiro','Moledo').
 
+%neste caso sabe-se que o ato foi entre o dia 12 e 16 de Março de 2017
+excepcao(ato(data(X,03,2017),2,8,41,8)) :- X>=1, X=<15.
 
-%se calhar agora metia-se uma cena :- dynamic data/3. p.e.: data(12,01,1996) para melhorar a inserção do conhecimento imperfeito
+%não se sabe se o ato foi em Fevereiro ou Março 
+excepcao(ato(data(2,03,2017),11,9,14,9)).
+excepcao(ato(data(3,03,2017),11,9,14,9)).
 
 
 %----------------------------------------------------------------------------
-
+%acho que é preciso alterar esta próxima excecao por causa da mudança da data
 excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(desconhecido,IDUT,IDSE,C,IDMED).
 excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,desconhecido,IDSE,C,IDMED).
 excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,desconhecido,C,IDMED).
