@@ -84,6 +84,20 @@ eliminarElemento([H|T], E, Res)	:- H\== E,
 
 
 %----------------------------------------------------------------------------
+%					META-PREDICADOS - Conhecimento Imperfeito
+%----------------------------------------------------------------------------
+
+demo(Q,verdadeiro) :- Q.
+demo(Q,falso) :- -Q.
+demo(Q,desconhecido) :- nao(Q), nao(-Q).
+
+nao( Questao ) :-
+    Questao, !, fail.
+nao( Questao ).
+%----------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------
 %								Invariantes
 %----------------------------------------------------------------------------
 
@@ -292,14 +306,6 @@ excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Med
 
 
 %+ato(D,IDUT,IDSE,C,IDMED)::(Med \= desconhecido, nao(nulo(Med))).
-
-demo(Q,verdadeiro) :- Q.
-demo(Q,falso) :- -Q.
-demo(Q,desconhecido) :- nao(Q), nao(-Q).
-
-nao( Questao ) :-
-    Questao, !, fail.
-nao( Questao ).
 
 
 %----------------------------------------------------------------------------
