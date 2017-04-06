@@ -24,7 +24,7 @@
 :- dynamic servico/4.		% (ID_Serviço, Descrição, Instituição, Cidade).
 :- dynamic ato/5.			% (Data, ID_Utente, ID_Serviço, Custo, ID_Médico).
 :- dynamic medico/5.		% (ID_Médico, Nome, Idade, Morada, Especialização).
-:- dynamic data/3.          % (Dia,Mês,Ano)
+:- dynamic data/3.          % (Dia, Mês, Ano)
 
 %----------------------------------------------------------------------------
 % Extensão do predicado que permite a evolucao/retrocesso do conhecimento 
@@ -205,72 +205,90 @@ ato(data(31,01,2017),13,9,50,1).
 %						Conhecimento imperfeito
 %----------------------------------------------------------------------------
 
-%utente mora numa destas 3 opçoes
-excecao(utente(15,'Zeferino Costa',40,'Rua do Dente')).
-excecao(utente(15,'Zeferino Costa',40,'Largo do Dente')).
-excecao(utente(15,'Zeferino Costa',40,'Avenida do Dente')).
 
-%sabe-se que o custo do ato foi superior a 50
-excecao(ato(data(04,02,2017),1,5,X,5)) :-  X>=50.
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% 	Incerto
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-%não se sabe o médico que fez o ato
-ato(data(08,02,2017),9,desconhecido,75,1).
+% Desconhecimento da morada do utente.
+utente(15,'António Manuel',47,morada_desconhecida).
 
-%idade do médico entre 2 valores
-excecao(medico(9,'Dr. Antonio Zequinha',X,'Estoril','Cirurgia')) :- X>=27, X=<37.
+% Desconhecimento da idade do utente.
+utente(16,'Zé Maria',idade_desconhecida,'Rua das azeitonas').
 
-%Impossível saber o custo deste ato
-ato(data(12,02,2017),3,5,interdito,5).
-nulo(interdito).
+% Desconhecimento do custo associado a um ato.
+ato(data(12,02,2017),3,2,custo_desconhecido,2).
 
-+ato(D,IDUT,IDSE,C,IDMED) :: (solucoes(C,(ato(data(12,02,2017),3,5,C,5),nao(nulo(C))),S), 
-								comprimento(S,N), N == 0).
+% Desconhecimento do utente associado a um ato.
+ato(data(20,01,2017),utente_desconhecido,5,47,5).
+	
+% Desconhecimento da especialização de um médico.
+medico(9,'Dr. Fernando Silva',36,'Porto',especializacao_desconhecida).
 
-%Neste ato apenas se sabe que não foi o utente com Id=2 
-ato(data(14,02,2017),desconhecido,6,85,6).
--ato(data(14,02,2017),2,6,85,6).
+% Conjunto das exceções associadas.
+excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, Idade,morada_desconhecida).
+excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, idade_desconhecida, Morada).
+excecao(ato(Data, ID_Utente, ID_Servico, Custo, ID_Medico)) :- ato(Data, ID_Utente, ID_Servico, custo_desconhecido, ID_Medico).
+excecao(ato(Data, ID_Utente, ID_Servico, Custo, ID_Medico)) :- ato(Data, utente_desconhecido, ID_Servico, Custo, ID_Medico).
+excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Medico, Nome, Idade, Morada, especializacao_desconhecida).
 
-%Neste ato sabe-se que o custo foi cerca de 25. ACHO QUE ESTÁ MAL ?????????
-ato(data(15,02,2017),6,7,X,7) :- cercade(X,25).
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% 	Impreciso
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+
+% Tendo conhecimento apenas do ano de nascimento do Luís é impossível confirmar 
+% a idade deste, sendo, portanto, 38 ou 39 anos. (-> era boa ideia se metessemos o ano 
+% nascimento dele, em vez da idade)
+
+excecao(utente(17,'Luís Peixoto',38,'Largo das flores')).
+excecao(utente(17,'Luís Peixoto',39,'Largo das flores')).
+
+% A Dra. Ana Fonseca abriu recentemente uma clínica que oferece serviços de uma só 
+% especialidade. Sabe-se também que a Dra. Ana Fonseca se especializou em Cardiologia,
+% Neurologia e ainda Neurocirurgia, desta forma, o serviço oferecido pela clínica
+% pode efetivamente ser de qualquer uma das especialidade da doutora.
+
+excecao(servico(10,'Cardiologia','Clínica Fonseca','Guimarães')).
+excecao(servico(10,'Neurologia','Clínica Fonseca','Guimarães')).
+excecao(servico(10,'Neurocirurgia','Clínica Fonseca','Guimarães')).
+
+% Devido a um problema na base de dados do Centro de Saúde, foi perdido o dia referente
+% a um determinado ato, sabendo-se agora apenas o ano e mês deste.
+
+excecao(ato(data(Dia,03,2017),6,3,85,3)) :- Dia >= 1, Dia <= 31.
+
+% O António contou ao José que na sua última consulta de Oftamologia gastou cerca de 100€.
+% O José não sabe o valor certo do custo associado à consulta do amigo, mas sabe todas as 
+% informações restantes.
+
+excecao(ato(data(30,04,2017),8,6,Custo,6)) :- cercade(Custo,100).
 cercade(X,Y) :- A is 0,9*Y, B is 1,1*Y, X>=A, X=<B.
 
-%sabe-se que este serviço não se encontra disponível
--servico(10,'Dermatologia','Espaco Saude Beirao Rendeiro','Moledo').
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
+% 	Interdito 
+%--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
-%neste caso sabe-se que o ato foi entre o dia 12 e 16 de Março de 2017
-excepcao(ato(data(X,03,2017),2,8,41,8)) :- X>=1, X=<15.
-
-%não se sabe se o ato foi em Fevereiro ou Março 
-excepcao(ato(data(2,03,2017),11,9,14,9)).
-excepcao(ato(data(3,03,2017),11,9,14,9)).
-
-
-%----------------------------------------------------------------------------
-%acho que é preciso alterar esta próxima excecao por causa da mudança da data
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(desconhecido,IDUT,IDSE,C,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,desconhecido,IDSE,C,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,desconhecido,C,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,desconhecido,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,desconhecido).
-
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(interdito,IDUT,IDSE,C,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,interdito,IDSE,C,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,interdito,C,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,interdito,IDMED).
-excecao(ato(D,IDUT,IDSE,C,IDMED)):- ato(D,IDUT,IDSE,C,interdito).
-
--ato(D,IDUT,IDSE,C,IDMED) :- nao(ato(D,IDUT,IDSE,C,IDMED)),
-								nao(excepcao(ato(D,IDUT,IDSE,C,IDMED))).
-
--utente(IDU,N,I,M) :- nao(utente(IDU,N,I,M)),
-						nao(excepcao(utente(IDU,N,I,M))).
-
--medico(ID,N,I,M,E) :- nao(medico(ID,N,I,M,E)),
-						nao(excepcao(medico(ID,N,I,M,E))).
+% Impossibilidade de se saber a morada de um determinado utente.
+utente(18,'Fernando Torres',22,morada_interdita).
+nulo(morada_interdita).
++utente(ID_Utente, Nome, Idade, Morada) :: (solucoes( (ID_Utente, Nome, Idade, Morada_Interdita),
+											(utente(18,'Fernando Torres',22,Morada_Interdita)),nao(nulo(Morada_Interdita))),S ),
+                  							comprimento( S,N ), N == 0 ).
 
 
--servico(IDS,D,I,C) :- nao(servico(IDS,D,I,C)),
-						nao(excepcao(servico(IDS,D,I,C))).
+% Impossibilidade de se saber a especialização de um determinado médico.
+medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', especializacao_interdita).
+nulo(especializacao_interdita).
++medico(ID_Medico, Nome, Idade, Morada, Especializacao) :: (solucoes( (ID_Medico, Nome, Idade, Morada, Especializacao_Interdita),
+											(medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', Especializacao_Interdita)),nao(nulo(Especializacao_Interdita))),S ),
+                  							comprimento( S,N ), N == 0 ).
+
+
+% Conjunto das exceções associadas.
+excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, Idade, morada_interdita).
+excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Medico, Nome, Idade, Morada, especializacao_interdita).
+
+
 
 
 %+ato(D,IDUT,IDSE,C,IDMED)::(Med \= desconhecido, nao(nulo(Med))).
@@ -282,6 +300,8 @@ demo(Q,desconhecido) :- nao(Q), nao(-Q).
 nao( Questao ) :-
     Questao, !, fail.
 nao( Questao ).
+
+
 %----------------------------------------------------------------------------
 %									Registar
 %----------------------------------------------------------------------------
