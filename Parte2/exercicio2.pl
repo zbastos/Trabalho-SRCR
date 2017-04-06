@@ -255,7 +255,7 @@ excecao(servico(10,'Neurocirurgia','Clínica Fonseca','Guimarães')).
 % Devido a um problema na base de dados do Centro de Saúde, foi perdido o dia referente
 % a um determinado ato, sabendo-se agora apenas o ano e mês deste.
 
-excecao(ato(data(Dia,03,2017),6,3,85,3)) :- Dia >= 1, Dia <= 31.
+excecao(ato(data(Dia,03,2017),6,3,85,3)) :- Dia>=1, Dia=<31.
 
 % O António contou ao José que na sua última consulta de Oftamologia gastou cerca de 100€.
 % O José não sabe o valor certo do custo associado à consulta do amigo, mas sabe todas as 
@@ -272,15 +272,15 @@ cercade(X,Y) :- A is 0,9*Y, B is 1,1*Y, X>=A, X=<B.
 utente(18,'Fernando Torres',22,morada_interdita).
 nulo(morada_interdita).
 +utente(ID_Utente, Nome, Idade, Morada) :: (solucoes( (ID_Utente, Nome, Idade, Morada_Interdita),
-											(utente(18,'Fernando Torres',22,Morada_Interdita)),nao(nulo(Morada_Interdita))),S ),
-                  							comprimento( S,N ), N == 0 ).
+											(utente(18,'Fernando Torres',22,Morada_Interdita)),nao(nulo(Morada_Interdita)),S ),
+											comprimento( S,N ), N == 0 ).
 
 
 % Impossibilidade de se saber a especialização de um determinado médico.
 medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', especializacao_interdita).
 nulo(especializacao_interdita).
 +medico(ID_Medico, Nome, Idade, Morada, Especializacao) :: (solucoes( (ID_Medico, Nome, Idade, Morada, Especializacao_Interdita),
-											(medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', Especializacao_Interdita)),nao(nulo(Especializacao_Interdita))),S ),
+											(medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', Especializacao_Interdita)),nao(nulo(Especializacao_Interdita)),S ),
                   							comprimento( S,N ), N == 0 ).
 
 
