@@ -148,17 +148,14 @@ nao( Questao ).
 					  		X==1).
 
 %não permitir a remoção de utentes, servicos e medicos caso existem atos associados a eles
--utente(IDU,N,I,M) :: (solucoes(IDU,ato(_,IDU,_,_,_),S),
-					   comprimento(S,X),
-					   X==0).
+-utente(IDU,N,I,M) :: (nao(ato(_,IDU,_,_,_)),
+					   nao(excecao(ato(_,IDU,_,_,_)))).
 
--servico(IDS,D,I,C) :: (solucoes(IDS,ato(_,_,IDS,_,_),S),
-					   	comprimento(S,X),
-					   	X==0).
+-servico(IDS,D,I,C) :: (nao(ato(_,_,IDS,_,_)),
+						nao(excecao(ato(_,_,IDS,_,_)))).
 
--medico(ID,N,I,M,E) :: (solucoes(ID,ato(_,_,_,_,ID),S),
-					   	comprimento(S,X),
-					   	X==0).
+-medico(ID,N,I,M,E) :: (nao(ato(_,_,_,_,ID)),
+						nao(excecao(ato(_,_,_,_,ID)))).
 
 %----------------------------------------------------------------------------
 %						Base de conhecimento inicial
