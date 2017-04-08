@@ -533,7 +533,7 @@ nulo(especializacao_interdita).
 servico(11,'Pediatria',instituicao_interdita,'Lisboa').
 nulo(instituicao_interdita).
 +servico(ID_Servico, Descricao, Instituicao, Cidade) :: (solucoes( (ID_Servico, Descricao, Instituicao_Interdita, Cidade),
-														 (servico(11,'Pediatria',instituicao_interdita,'Lisboa'),nao(nulo(Instituicao_Interdita))),
+														 (servico(11,'Pediatria',instituicao_interdita,'Lisboa'),nao(nulo(Instituicao_Interdita))), S),
 														 comprimento(S,N), N == 0 ).
 
 
