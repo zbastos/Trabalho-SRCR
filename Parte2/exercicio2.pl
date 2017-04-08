@@ -529,12 +529,17 @@ nulo(especializacao_interdita).
                   							comprimento( S,N ), N == 0 ).
 
 
+% Impossibilidade de se saber a instituição de um determinado serviço.
+servico(11,'Pediatria',instituicao_interdita,'Lisboa').
+nulo(instituicao_interdita).
++servico(ID_Servico, Descricao, Instituicao, Cidade) :: (solucoes( (ID_Servico, Descricao, Instituicao_Interdita, Cidade),
+														 (servico(11,'Pediatria',instituicao_interdita,'Lisboa'),nao(nulo(Instituicao_Interdita))),
+														 comprimento(S,N), N == 0 ).
+
+
 % Conjunto das exceções associadas.
 excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, Idade, morada_interdita).
 excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Medico, Nome, Idade, Morada, especializacao_interdita).
-
-
-%+ato(D,IDUT,IDSE,C,IDMED)::(Med \= desconhecido, nao(nulo(Med))).
-
+excecao(servico(ID_Servico, Descricao, Instituicao, Cidade)) :- servico(ID_Servico, Descricao, instituicao_interdita, Cidade).
 
 
