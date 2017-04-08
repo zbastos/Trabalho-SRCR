@@ -196,7 +196,7 @@ medico(5,'Dra. Alberta Mendes',57,'Matosinhos','Otorrinolaringologia').
 medico(6,'Dr. Cristiano Soares',34,'Terras de Bouro','Oftalmologia').
 medico(7,'Dra. Rosalina Oliveira',49,'Vieira do Minho','Urologia').
 medico(8,'Dr. Carlos Mota',44,'Maia','Ginecologia').
-
+medico(9,'Dr. Perdo Silva',47,'Esposende','Oftalmologia').
 
 ato(data(12,01,2017),1,1,19,1).
 ato(data(13,01,2017),14,2,10,2).
@@ -455,20 +455,40 @@ findMedicosServico([X|T],R) :- solucoes((X,N,I,M,E),medico(X,N,I,M,E),S),
 
 % Desconhecimento da morada do utente.
 utente(15,'Antonio Manuel',47,morada_desconhecida).
+utente(16,'Eduardo Fidalgo',11,morada_desconhecida).
 
 % Desconhecimento da idade do utente, mas com o conhecimento de que não é 50 anos.
-utente(16,'Ze Maria',idade_desconhecida,'Rua das azeitonas').
--utente(16,'Ze Maria',50,'Rua das azeitonas').
+utente(17,'Ze Maria',idade_desconhecida,'Rua das azeitonas').
+-utente(17,'Ze Maria',50,'Rua das azeitonas').
+
+% Desconhecimento da idade do utente, mas com o conhecimento de que não é 45 anos.
+utente(18,'Gonçalo Ferreira',idade_desconhecida,'Avenida Aveirense').
+-utente(18,'Gonçalo Ferreira',45,'Avenida Aveirense').
 
 % Desconhecimento do custo associado a um ato.
 ato(data(12,02,2017),3,2,custo_desconhecido,2).
+ato(data(24,02,2017),7,1,custo_desconhecido,1).
 
 % Desconhecimento do utente associado a um ato, mas com o conhecimento de que não é o Marco Cardoso (id: 14).
 ato(data(20,01,2017),utente_desconhecido,5,47,5).
 -ato(data(20,01,2017),14,5,47,5).
+
+% Desconhecimento do utente associado a um ato, mas com o conhecimento de que não é o Pedro Luis (id: 13).
+ato(data(21,01,2017),utente_desconhecido,9,25,9).
+-ato(data(21,01,2017),13,9,25,9).
 	
 % Desconhecimento da especialização de um médico.
-medico(9,'Dr. Fernando Silva',36,'Porto',especializacao_desconhecida).
+medico(10,'Dr. Fernando Silva',36,'Porto',especializacao_desconhecida).
+medico(11,'Dr. Agostinho Paraty',62,'São Mamede',especializacao_desconhecida).
+
+%Desconhecimento do dia da data associado a um ato.
+ato(data(dia_desconhecido,01,2017),5,1,124,1).
+ato(data(dia_desconhecido,02,2017),3,4,18,4).
+
+%Desconhecimento da instituição associada a um serviço.
+servico(10,'Pneumologia',instituicao_desconhecida,'Barcelos').
+servico(11,'Radiologia',instituicao_desconhecida,'Porto').
+
 
 % Conjunto das exceções associadas.
 excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, Idade,morada_desconhecida).
@@ -476,6 +496,8 @@ excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, idade
 excecao(ato(Data, ID_Utente, ID_Servico, Custo, ID_Medico)) :- ato(Data, ID_Utente, ID_Servico, custo_desconhecido, ID_Medico).
 excecao(ato(Data, ID_Utente, ID_Servico, Custo, ID_Medico)) :- ato(Data, utente_desconhecido, ID_Servico, Custo, ID_Medico).
 excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Medico, Nome, Idade, Morada, especializacao_desconhecida).
+excecao(ato(data(Dia,Mes,Ano), ID_Utente, ID_Servico, Custo, ID_Medico)) :- ato(data(dia_desconhecido,Mes,Ano), ID_Utente, ID_Servico, Custo, ID_Medico).
+excecao(servico(ID_Servico, Descricao, Instituicao, Cidade)) :- servico(ID_Servico, Descricao, instituicao_desconhecida, Cidade).
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % 	Impreciso
@@ -485,22 +507,27 @@ excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Med
 % a idade deste, sendo, portanto, 38 ou 39 anos. (-> era boa ideia se metessemos o ano 
 % nascimento dele, em vez da idade)
 
-excecao(utente(17,'Luis Peixoto',38,'Largo das flores')).
-excecao(utente(17,'Luis Peixoto',39,'Largo das flores')).
+excecao(utente(19,'Luis Peixoto',38,'Largo das flores')).
+excecao(utente(19,'Luis Peixoto',39,'Largo das flores')).
 
 % A Dra. Ana Fonseca abriu recentemente uma clínica que oferece serviços de uma só 
 % especialidade. Sabe-se também que a doutora se especializou em Cardiologia,
 % Neurologia e ainda Neurocirurgia, desta forma, o serviço oferecido pela clínica
 % pode efetivamente ser de qualquer uma das especialidade da doutora.
 
-excecao(servico(10,'Cardiologia','Clinica Fonseca','Guimaraes')).
-excecao(servico(10,'Neurologia','Clinica Fonseca','Guimaraes')).
-excecao(servico(10,'Neurocirurgia','Clinica Fonseca','Guimaraes')).
+excecao(servico(12,'Cardiologia','Clinica Fonseca','Guimaraes')).
+excecao(servico(12,'Neurologia','Clinica Fonseca','Guimaraes')).
+excecao(servico(12,'Neurocirurgia','Clinica Fonseca','Guimaraes')).
 
-% Devido a um problema na base de dados do Centro de Saúde, foi perdido o dia referente
+% Devido a um problema na base de dados do Hospital, foi perdido o dia referente
 % a um determinado ato, sabendo-se agora apenas o ano e mês deste.
 
 excecao(ato(data(Dia,03,2017),6,3,85,3)) :- Dia>=1, Dia=<31.
+
+% Devido a um problema na base de dados do Posto Médico, foi perdido o mês referente
+% a um determinado ato, sabendo-se agora apenas o dia e o ano deste.
+
+excecao(ato(data(5,Mes,2017),2,4,40,4)) :- Mes>=1, Dia=<12.
 
 % O António contou ao José que na sua última consulta de Oftamologia gastou cerca de 100€.
 % O José não sabe o valor certo do custo associado à consulta do amigo, mas sabe todas as 
@@ -509,35 +536,78 @@ excecao(ato(data(Dia,03,2017),6,3,85,3)) :- Dia>=1, Dia=<31.
 excecao(ato(data(30,04,2017),8,6,Custo,6)) :- cercade(Custo,100).
 cercade(X,Y) :- A is 0.9*Y, B is 1.1*Y, X>=A, X=<B.
 
+% O Dr. Rui tem duas casas, uma em Braga e outra em Barcelos, no entanto não se sabe ao 
+% certo em qual delas ele habita de momento.
+
+excecao(medico(12,'Dr. Rui Pinto',39,'Braga','Cardiologia')).
+excecao(medico(12,'Dr. Rui Pinto',39,'Barcelos','Cardiologia')).
+
+% O Dr. Joel especializou-se em duas especialidades, Cirurgia Geral e Cirurgia Pediatrica,
+% no entanto não se sabe ao certo em qual delas ele se encontra de momento a exercer funções.
+
+excecao(medico(13,'Dr. Joel Rocha',39,'Braga','Cirurgia Geral')).
+excecao(medico(13,'Dr. Joal Rocha',39,'Barcelos','Cirurgia Pediatrica')).
+
+% A Sr.Ana Martins teve uma consulta de Oftalmologia no dia 28 de Março, no entanto
+% não houve registo dessa mesma consulta por lapso do Doutor que a atendeu. Contudo,
+% sabe-se que esta consulta foi dada pelo Dr.Pedro Silva ou pelo Dr.Cristiano Soares,
+% visto serem os únicos especializados em Oftalmologia nessa clínica.
+
+excecao(ato(data(28,03,2017),4,6,60,6)).
+excecao(ato(data(28,03,2017),4,6,60,9)).
+
+%
+
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % 	Interdito 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Impossibilidade de se saber a morada de um determinado utente.
-utente(18,'Fernando Torres',22,morada_interdita).
+
 nulo(morada_interdita).
+
+utente(20,'Fernando Torres',22,morada_interdita).
 +utente(ID_Utente, Nome, Idade, Morada) :: (solucoes( (ID_Utente, Nome, Idade, Morada_Interdita),
-											(utente(18,'Fernando Torres',22,Morada_Interdita),nao(nulo(Morada_Interdita))),S ),
+											(utente(20,'Fernando Torres',22,Morada_Interdita),nao(nulo(Morada_Interdita))),S ),
+											comprimento( S,N ), N == 0 ).
+
+utente(21,'Luis Lima',32,morada_interdita).
++utente(ID_Utente, Nome, Idade, Morada) :: (solucoes( (ID_Utente, Nome, Idade, Morada_Interdita),
+											(utente(21,'Luis Lima',32,Morada_Interdita),nao(nulo(Morada_Interdita))),S ),
 											comprimento( S,N ), N == 0 ).
 
 
 % Impossibilidade de se saber a especialização de um determinado médico.
-medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', especializacao_interdita).
-nulo(especializacao_interdita).
-+medico(ID_Medico, Nome, Idade, Morada, Especializacao) :: (solucoes( (ID_Medico, Nome, Idade, Morada, Especializacao_Interdita),
-											(medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', Especializacao_Interdita),nao(nulo(Especializacao_Interdita))),S ),
-                  							comprimento( S,N ), N == 0 ).
 
+nulo(especializacao_interdita).
+
+medico(14, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', especializacao_interdita).
++medico(ID_Medico, Nome, Idade, Morada, Especializacao) :: (solucoes( (ID_Medico, Nome, Idade, Morada, Especializacao_Interdita),
+														   (medico(14, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', Especializacao_Interdita),nao(nulo(Especializacao_Interdita))),S ),
+                  										   comprimento( S,N ), N == 0 ).
+
+medico(15, 'Dr. Gonçalo Almeida', 58, 'Rua da Cascata', especializacao_interdita).
++medico(ID_Medico, Nome, Idade, Morada, Especializacao) :: (solucoes( (ID_Medico, Nome, Idade, Morada, Especializacao_Interdita),
+														   (medico(15, 'Dr. Gonçalo Almeida', 58, 'Rua da Cascata', Especializacao_Interdita),nao(nulo(Especializacao_Interdita))),S ),
+                  										   comprimento( S,N ), N == 0 ).
 
 % Impossibilidade de se saber a instituição de um determinado serviço.
-servico(11,'Pediatria',instituicao_interdita,'Lisboa').
+
 nulo(instituicao_interdita).
+
+servico(13,'Pediatria',instituicao_interdita,'Lisboa').
 +servico(ID_Servico, Descricao, Instituicao, Cidade) :: (solucoes( (ID_Servico, Descricao, Instituicao_Interdita, Cidade),
-														 (servico(11,'Pediatria',instituicao_interdita,'Lisboa'),nao(nulo(Instituicao_Interdita))), S),
-														 comprimento(S,N), N == 0 ).
+														(servico(13,'Pediatria',Instituicao_Interdita,'Lisboa'),nao(nulo(Instituicao_Interdita))), S),
+														comprimento(S,N), N == 0 ).
+
+servico(14,'Gastrenterologia',instituicao_interdita,'Porto').
++servico(ID_Servico, Descricao, Instituicao, Cidade) :: (solucoes( (ID_Servico, Descricao, Instituicao_Interdita, Cidade),
+														(servico(14,'Gastrenterologia',Instituicao_Interdita,'Porto'),nao(nulo(Instituicao_Interdita))), S),
+														comprimento(S,N), N == 0 ).
 
 
 % Conjunto das exceções associadas.
+
 excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, Idade, morada_interdita).
 excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Medico, Nome, Idade, Morada, especializacao_interdita).
 excecao(servico(ID_Servico, Descricao, Instituicao, Cidade)) :- servico(ID_Servico, Descricao, instituicao_interdita, Cidade).
@@ -557,4 +627,3 @@ nulo('Clinica').
 nulo('Museu').
 
 +servico(ID_Servico, Descricao, Instituicao, Cidade) :: (ID_Servico \= servico_desconhecido, nao(nulo(Instituicao))).
-
