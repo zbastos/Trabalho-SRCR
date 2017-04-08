@@ -437,9 +437,9 @@ findMedicosServico([X|T],R) :- solucoes((X,N,I,M,E),medico(X,N,I,M,E),S),
 -medico(ID_Medico, Nome, Idade, Morada, Especializacao) :- nao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)),
 														   nao(excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao))).
 
-
--utente(25,'António Manuel',47,'Avenida Manuel Carvalho').
--servico(15,'Cardiologia','Clínica Limão','Guimarães')
+% Exemplos de conhecimento negativo.
+-utente(25,'Antonio Manuel',47,'Avenida Manuel Carvalho').
+-servico(15,'Cardiologia','Clinica Limao','Guimaraes')
 -ato(data(20,05,2017),1,7,87,7).
 -medico(9,'Dr. Fernando Silva',36,'Porto','Ginecologia').
 
@@ -454,11 +454,11 @@ findMedicosServico([X|T],R) :- solucoes((X,N,I,M,E),medico(X,N,I,M,E),S),
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Desconhecimento da morada do utente.
-utente(15,'António Manuel',47,morada_desconhecida).
+utente(15,'Antonio Manuel',47,morada_desconhecida).
 
 % Desconhecimento da idade do utente, mas com o conhecimento de que não é 50 anos.
-utente(16,'Zé Maria',idade_desconhecida,'Rua das azeitonas').
--utente(16,'Zé Maria',50,'Rua das azeitonas').
+utente(16,'Ze Maria',idade_desconhecida,'Rua das azeitonas').
+-utente(16,'Ze Maria',50,'Rua das azeitonas').
 
 % Desconhecimento do custo associado a um ato.
 ato(data(12,02,2017),3,2,custo_desconhecido,2).
@@ -485,17 +485,17 @@ excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Med
 % a idade deste, sendo, portanto, 38 ou 39 anos. (-> era boa ideia se metessemos o ano 
 % nascimento dele, em vez da idade)
 
-excecao(utente(17,'Luís Peixoto',38,'Largo das flores')).
-excecao(utente(17,'Luís Peixoto',39,'Largo das flores')).
+excecao(utente(17,'Luis Peixoto',38,'Largo das flores')).
+excecao(utente(17,'Luis Peixoto',39,'Largo das flores')).
 
 % A Dra. Ana Fonseca abriu recentemente uma clínica que oferece serviços de uma só 
 % especialidade. Sabe-se também que a doutora se especializou em Cardiologia,
 % Neurologia e ainda Neurocirurgia, desta forma, o serviço oferecido pela clínica
 % pode efetivamente ser de qualquer uma das especialidade da doutora.
 
-excecao(servico(10,'Cardiologia','Clínica Fonseca','Guimarães')).
-excecao(servico(10,'Neurologia','Clínica Fonseca','Guimarães')).
-excecao(servico(10,'Neurocirurgia','Clínica Fonseca','Guimarães')).
+excecao(servico(10,'Cardiologia','Clinica Fonseca','Guimaraes')).
+excecao(servico(10,'Neurologia','Clinica Fonseca','Guimaraes')).
+excecao(servico(10,'Neurocirurgia','Clinica Fonseca','Guimaraes')).
 
 % Devido a um problema na base de dados do Centro de Saúde, foi perdido o dia referente
 % a um determinado ato, sabendo-se agora apenas o ano e mês deste.
@@ -507,7 +507,7 @@ excecao(ato(data(Dia,03,2017),6,3,85,3)) :- Dia>=1, Dia=<31.
 % informações restantes.
 
 excecao(ato(data(30,04,2017),8,6,Custo,6)) :- cercade(Custo,100).
-cercade(X,Y) :- A is 0,9*Y, B is 1,1*Y, X>=A, X=<B.
+cercade(X,Y) :- A is 0.9*Y, B is 1.1*Y, X>=A, X=<B.
 
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 % 	Interdito 
