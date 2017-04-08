@@ -517,7 +517,7 @@ cercade(X,Y) :- A is 0.9*Y, B is 1.1*Y, X>=A, X=<B.
 utente(18,'Fernando Torres',22,morada_interdita).
 nulo(morada_interdita).
 +utente(ID_Utente, Nome, Idade, Morada) :: (solucoes( (ID_Utente, Nome, Idade, Morada_Interdita),
-											(utente(18,'Fernando Torres',22,Morada_Interdita)),nao(nulo(Morada_Interdita)),S ),
+											(utente(18,'Fernando Torres',22,Morada_Interdita),nao(nulo(Morada_Interdita))),S ),
 											comprimento( S,N ), N == 0 ).
 
 
@@ -525,7 +525,7 @@ nulo(morada_interdita).
 medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', especializacao_interdita).
 nulo(especializacao_interdita).
 +medico(ID_Medico, Nome, Idade, Morada, Especializacao) :: (solucoes( (ID_Medico, Nome, Idade, Morada, Especializacao_Interdita),
-											(medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', Especializacao_Interdita)),nao(nulo(Especializacao_Interdita)),S ),
+											(medico(10, 'Dr. Armando Leal', 68, 'Rua Nova de Santa Cruz', Especializacao_Interdita),nao(nulo(Especializacao_Interdita))),S ),
                   							comprimento( S,N ), N == 0 ).
 
 
