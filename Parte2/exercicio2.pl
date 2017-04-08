@@ -172,7 +172,7 @@ utente(8,'Afonso Aragao',26,'Rua dos Palacetes').
 utente(9,'Jose Silva',73,'Estreito Largo').
 utente(10,'Frederico Pereira',4,'Rua dos Carretos').
 utente(11,'Rita Gameiro',52,'Rua Engenheiro Antonio Filipe').
-utente(12,'Luis Marcio',15,'República das Bananas').
+utente(12,'Luis Marcio',15,'Republica das Bananas').
 utente(13,'Pedro Luis',53,'Largo do Bigode').
 utente(14,'Marco Cardoso',33,'Avenida Principal').
 
