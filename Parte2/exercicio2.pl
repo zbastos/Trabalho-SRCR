@@ -542,4 +542,19 @@ excecao(utente(ID_Utente, Nome, Idade, Morada)) :- utente(ID_Utente, Nome, Idade
 excecao(medico(ID_Medico, Nome, Idade, Morada, Especializacao)) :- medico(ID_Medico, Nome, Idade, Morada, especializacao_interdita).
 excecao(servico(ID_Servico, Descricao, Instituicao, Cidade)) :- servico(ID_Servico, Descricao, instituicao_interdita, Cidade).
 
+% Especializações invalidas/incompletas
+
+nulo('Cirurgia').
+nulo('Medicina').
+nulo('Bombeiro').
+
++medico(ID_Medico, Nome, Idade, Morada, Especializacao) :: (ID_Medico \= medico_desconhecido, nao(nulo(Especializacao))).
+
+% Instituições invalidas/incompletas
+
+nulo('Hospital').
+nulo('Clinica').
+nulo('Museu').
+
++servico(ID_Servico, Descricao, Instituicao, Cidade) :: (ID_Servico \= servico_desconhecido, nao(nulo(Instituicao))).
 
