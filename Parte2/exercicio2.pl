@@ -544,8 +544,8 @@ excecao(medico(12,'Dr. Rui Pinto',39,'Barcelos','Cardiologia')).
 % O Dr. Joel especializou-se em duas especialidades, Cirurgia Geral e Cirurgia Pediatrica,
 % no entanto não se sabe ao certo em qual delas ele se encontra de momento a exercer funções.
 
-excecao(medico(13,'Dr. Joel Rocha',39,'Braga','Cirurgia Geral')).
-excecao(medico(13,'Dr. Joal Rocha',39,'Barcelos','Cirurgia Pediatrica')).
+excecao(medico(13,'Dr. Joel Rocha',39,'Ponte da Barca','Cirurgia Geral')).
+excecao(medico(13,'Dr. Joal Rocha',39,'Ponte da Barca','Cirurgia Pediatrica')).
 
 % A Sr.Ana Martins teve uma consulta de Oftalmologia no dia 28 de Março, no entanto
 % não houve registo dessa mesma consulta por lapso do Doutor que a atendeu. Contudo,
