@@ -504,8 +504,7 @@ excecao(servico(ID_Servico, Descricao, Instituicao, Cidade)) :- servico(ID_Servi
 %--------------------------------- - - - - - - - - - -  -  -  -  -   -
 
 % Tendo conhecimento apenas do ano de nascimento do Luís é impossível confirmar 
-% a idade deste, sendo, portanto, 38 ou 39 anos. (-> era boa ideia se metessemos o ano 
-% nascimento dele, em vez da idade)
+% a idade deste, sendo, portanto, 38 ou 39 anos. 
 
 excecao(utente(19,'Luis Peixoto',38,'Largo das flores')).
 excecao(utente(19,'Luis Peixoto',39,'Largo das flores')).
