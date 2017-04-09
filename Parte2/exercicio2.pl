@@ -526,7 +526,7 @@ excecao(ato(data(Dia,03,2017),6,3,85,3)) :- Dia>=1, Dia=<31.
 % Devido a um problema na base de dados do Posto Médico, foi perdido o mês referente
 % a um determinado ato, sabendo-se agora apenas o dia e o ano deste.
 
-excecao(ato(data(5,Mes,2017),2,4,40,4)) :- Mes>=1, Dia=<12.
+excecao(ato(data(5,Mes,2017),2,4,40,4)) :- Mes>=1, Mes=<12.
 
 % O António contou ao José que na sua última consulta de Oftamologia gastou cerca de 100€.
 % O José não sabe o valor certo do custo associado à consulta do amigo, mas sabe todas as 
