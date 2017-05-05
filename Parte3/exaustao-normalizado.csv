@@ -1,5 +1,4 @@
-Performance.KDTMean;Performance.MAMean;Performance.MVMean;Performance.TBCMean;Performance.DDCMean;Performance.DMSMean;Performance.AEDMean;Performance.ADMSLMean;ExhaustionLevel;Performance.Task
-KDT;MA;MV;TBC;DDC;DMS;AED;ADMSL;Exaust‹o;Tarefa
+Performance.KDTMean;Performance.MAMean;Performance.MVMean;Performance.TBCMean;Performance.DDCMean;Performance.DMSMean;Performance.AEDMean;Performance.ADMSLMean;FatigueLevel;Performance.Task
 0,685482821;0,036346519;0,041677644;-0,085541958;0,099002914;5,8186E-05;-0,007109841;0,016009068;1;1
 0,021535506;0,038227324;0,042273998;-0,054892;-0,016446983;0,002066559;0,01371244;0,058274226;1;1
 0,001741047;0,046606792;0,047566659;-0,09511432;0,523803686;0,0082762;-0,023689567;0,11327566;1;1

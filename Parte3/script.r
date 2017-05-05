@@ -5,22 +5,22 @@ library(hydroGOF)
 #summary()
 
 #ler dados
-dados <- read.csv("creditset.csv")
-
-#treinar os primeiros 1000 dados
-treino <- dados[1:1000, ]
-
-#criar teste 
-teste <- dados[1001: 2000, ]
+dadosnorm <- read.csv("/Users/josebastos/um/3ano/srcr/Trabalho-SRCR/Parte3/exaustao-normalizado.csv",header=TRUE,sep=";",dec=",")
 
 
-formula01 <- 
+formulaRNA <- Performance.Task+ExhaustionLevel ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
 
-rnacredito <- neuralnet(formula01, treino, hidden = c(4), lifesign = "full", linear.output = FALSE, threshold = 0.01)
+fatiguenet <- neuralnet(formulaRNA, dadosnorm, hidden = c(4,2), lifesign = "full", linear.output = FALSE, threshold = 0.01)
 
-plot(rnacredito, rep="best")
+plot(fatiguenet, rep="best")
 
-teste.01 <- subset(teste, select = c("LTI", "age"))
+#teste.01 <- subset(teste, select = c("LTI", "age"))
+
+
+
+
+
+
 
 rnacredito.resultados <- compute(rnacredito, teste.01)
 
