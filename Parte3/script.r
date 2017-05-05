@@ -7,10 +7,21 @@ library(hydroGOF)
 #ler dados
 dadosnorm <- read.csv("/Users/josebastos/um/3ano/srcr/Trabalho-SRCR/Parte3/exaustao-normalizado.csv",header=TRUE,sep=";",dec=",")
 
+#dados para treinar a rede
+trainset <- [1:700,]
 
-formulaRNA <- Performance.Task+ExhaustionLevel ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
+#dados para testar a rede
+testset <- [701:845,]
 
-fatiguenet <- neuralnet(formulaRNA, dadosnorm, hidden = c(4,2), lifesign = "full", linear.output = FALSE, threshold = 0.01)
+#formulas
+formulaRNA <- Performance.Task+FatigueLevel ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
+formulaFatigue <- FatigueLevel ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
+formulaTask <- Performance.Task ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
+
+#redes
+fatiguenet <- neuralnet(formulaFatigue, dadosnorm, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
+
+tasknet <- neuralnet(formulaTask, dadosnorm, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
 
 plot(fatiguenet, rep="best")
 
