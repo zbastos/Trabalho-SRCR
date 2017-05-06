@@ -42,7 +42,7 @@ tasknet.results <- compute(tasknet,vartest)
 #comparar resultados de teste e de treino
 
 resultadoFatigue <- data.frame(OutputEsperado = testset$FatigueLevel, Output = fatiguenet.results$net.result)
-#tasknet.results$net.result <- round(tasknet.results$net.result, digits = 0)
+tasknet.results$net.result <- round(tasknet.results$net.result, digits = 0)
 resultadotask <- data.frame(OutputEsperado = testset$Performance.Task, Output = tasknet.results$net.result)
 
 #imprimir
@@ -59,23 +59,26 @@ rmse(c(testset$Performance.Task),c(resultadotask$Output))
 
 #comparação de cada variável
 
-plot(fatiguenet$Performance.KDTMean,fatiguenet$FatigueLevel)
-plot(fatiguenet$Performance.MAMean,fatiguenet$FatigueLevel)
-plot(fatiguenet$Performance.MVMean,fatiguenet$FatigueLevel)
-plot(fatiguenet$Performance.TBCMean,fatiguenet$FatigueLevel)
-plot(fatiguenet$Performance.DDCMean,fatiguenet$FatigueLevel)
-plot(fatiguenet$Performance.DMSMean,fatiguenet$FatigueLevel)
-plot(fatiguenet$Performance.AEDMean,fatiguenet$FatigueLevel)
-plot(fatiguenet$Performance.ADMSLMean,fatiguenet$FatigueLevel)
+dados <- read.csv("/Users/josebastos/um/3ano/srcr/Trabalho-SRCR/Parte3/exaustao.csv",header=TRUE,sep=";",dec=",")
 
-plot(tasknet$Performance.KDTMean,tasknet$Performance.Task)
-plot(tasknet$Performance.MAMean,tasknet$Performance.Task)
-plot(tasknet$Performance.MVMean,tasknet$Performance.Task)
-plot(tasknet$Performance.TBCMean,tasknet$Performance.Task)
-plot(tasknet$Performance.DDCMean,tasknet$Performance.Task)
-plot(tasknet$Performance.DMSMean,tasknet$Performance.Task)
-plot(tasknet$Performance.AEDMean,tasknet$Performance.Task)
-plot(tasknet$Performance.ADMSLMean,tasknet$Performance.Task)
+
+plot(dados$Performance.KDTMean,dados$FatigueLevel)
+plot(dados$Performance.MAMean,dados$FatigueLevel)
+plot(dados$Performance.MVMean,dados$FatigueLevel)
+plot(dados$Performance.TBCMean,dados$FatigueLevel)
+plot(dados$Performance.DDCMean,dados$FatigueLevel)
+plot(dados$Performance.DMSMean,dados$FatigueLevel)
+plot(dados$Performance.AEDMean,dados$FatigueLevel)
+plot(dados$Performance.ADMSLMean,dados$FatigueLevel)
+
+plot(dados$Performance.KDTMean,dados$Performance.Task)
+plot(dados$Performance.MAMean,dados$Performance.Task)
+plot(dados$Performance.MVMean,dados$Performance.Task)
+plot(dados$Performance.TBCMean,dados$Performance.Task)
+plot(dados$Performance.DDCMean,dados$Performance.Task)
+plot(dados$Performance.DMSMean,dados$Performance.Task)
+plot(dados$Performance.AEDMean,dados$Performance.Task)
+plot(dados$Performance.ADMSLMean,dados$Performance.Task)
 
 
 #rnacredito.resultados <- compute(rnacredito, teste.01)
