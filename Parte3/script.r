@@ -49,14 +49,19 @@ resultadotask <- data.frame(OutputEsperado = testset$Performance.Task, Output = 
 
 print(round(fatiguenet.results$net.result, digits = 2))
 
-print(round(tasknet$net.result, digits = 2))
+print(round(tasknet.results$net.result, digits = 2))
 
+#erros
+
+rmse(c(testset$FatigueLevel),c(resultadoFatigue$Output))
+
+rmse(c(testset$Performance.Task),c(resultadotask$Output))
 
 
 #rnacredito.resultados <- compute(rnacredito, teste.01)
 
-resultados <- data.frame(atual = teste$default10yr, previsao = rnacredito.resultados$net.result)
+#resultados <- data.frame(atual = teste$default10yr, previsao = rnacredito.resultados$net.result)
 
-resultados$previsao <- round(resultados$previsao, digits = 0)
+#resultados$previsao <- round(resultados$previsao, digits = 0)
 
-rmse(c(teste$default10yr), c(resultados$previsao))
+#rmse(c(teste$default10yr), c(resultados$previsao))
