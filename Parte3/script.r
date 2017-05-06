@@ -19,9 +19,9 @@ formulaFatigue <- FatigueLevel ~ Performance.KDTMean+Performance.MAMean+Performa
 formulaTask <- Performance.Task ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
 
 #redes
-fatiguenet <- neuralnet(formulaFatigue, dadosnorm, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
+fatiguenet <- neuralnet(formulaFatigue, trainset, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
 
-tasknet <- neuralnet(formulaTask, dadosnorm, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
+tasknet <- neuralnet(formulaTask, trainset, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
 
 plot(fatiguenet, rep="best")
 
@@ -42,7 +42,7 @@ tasknet.results <- compute(tasknet,vartest)
 #comparar resultados de teste e de treino
 
 resultadoFatigue <- data.frame(OutputEsperado = testset$FatigueLevel, Output = fatiguenet.results$net.result)
-
+#tasknet.results$net.result <- round(tasknet.results$net.result, digits = 0)
 resultadotask <- data.frame(OutputEsperado = testset$Performance.Task, Output = tasknet.results$net.result)
 
 #imprimir
@@ -56,6 +56,26 @@ print(round(tasknet.results$net.result, digits = 2))
 rmse(c(testset$FatigueLevel),c(resultadoFatigue$Output))
 
 rmse(c(testset$Performance.Task),c(resultadotask$Output))
+
+#comparação de cada variável
+
+plot(fatiguenet$Performance.KDTMean,fatiguenet$FatigueLevel)
+plot(fatiguenet$Performance.MAMean,fatiguenet$FatigueLevel)
+plot(fatiguenet$Performance.MVMean,fatiguenet$FatigueLevel)
+plot(fatiguenet$Performance.TBCMean,fatiguenet$FatigueLevel)
+plot(fatiguenet$Performance.DDCMean,fatiguenet$FatigueLevel)
+plot(fatiguenet$Performance.DMSMean,fatiguenet$FatigueLevel)
+plot(fatiguenet$Performance.AEDMean,fatiguenet$FatigueLevel)
+plot(fatiguenet$Performance.ADMSLMean,fatiguenet$FatigueLevel)
+
+plot(tasknet$Performance.KDTMean,tasknet$Performance.Task)
+plot(tasknet$Performance.MAMean,tasknet$Performance.Task)
+plot(tasknet$Performance.MVMean,tasknet$Performance.Task)
+plot(tasknet$Performance.TBCMean,tasknet$Performance.Task)
+plot(tasknet$Performance.DDCMean,tasknet$Performance.Task)
+plot(tasknet$Performance.DMSMean,tasknet$Performance.Task)
+plot(tasknet$Performance.AEDMean,tasknet$Performance.Task)
+plot(tasknet$Performance.ADMSLMean,tasknet$Performance.Task)
 
 
 #rnacredito.resultados <- compute(rnacredito, teste.01)
