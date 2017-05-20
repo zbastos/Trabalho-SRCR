@@ -5,7 +5,7 @@ library(hydroGOF)
 #summary()
 
 #ler dados
-dadosnorm <- read.csv("/Users/josebastos/um/3ano/srcr/Trabalho-SRCR/Parte3/exaustao-normalizado.csv",header=TRUE,sep=";",dec=",")
+dadosnorm <- read.csv("/Users/Ricardo/Documents/Git/Trabalho-SRCR/Parte3/exaustao-normalizado.csv",header=TRUE,sep=";",dec=",")
 
 #dados para treinar a rede
 trainset <- dadosnorm[1:700,]
@@ -29,7 +29,7 @@ plot(tasknet, rep="best")
 
 
 
-#testset tem valores de output que é necessário removê-los
+#testset tem valores de output que ?? necess??rio remov??-los
 
 vartest <- subset(testset, select = -c(FatigueLevel, Performance.Task))
 
@@ -57,9 +57,9 @@ rmse(c(testset$FatigueLevel),c(resultadoFatigue$Output))
 
 rmse(c(testset$Performance.Task),c(resultadotask$Output))
 
-#comparação de cada variável
+#compara????o de cada vari??vel
 
-dados <- read.csv("/Users/josebastos/um/3ano/srcr/Trabalho-SRCR/Parte3/exaustao.csv",header=TRUE,sep=";",dec=",")
+dados <- read.csv("/Users/Ricardo/Documents/Git/Trabalho-SRCR/Parte3/exaustao.csv",header=TRUE,sep=";",dec=",")
 
 
 plot(dados$Performance.KDTMean,dados$FatigueLevel)
