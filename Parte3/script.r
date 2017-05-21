@@ -5,23 +5,32 @@ library(hydroGOF)
 #summary()
 
 #ler dados
-dadosnorm <- read.csv("/Users/Ricardo/Documents/Git/Trabalho-SRCR/Parte3/exaustao-normalizado.csv",header=TRUE,sep=";",dec=",")
+dados <- read.csv("/Users/Ricardo/Documents/Git/Trabalho-SRCR/Parte3/dados.csv",header=TRUE,sep=";",dec=",")
+
+#normalizar fatiguelevel para 0 e 1
+dados$FatigueLevel[dados$FatigueLevel <= 3] <- 0
+dados$FatigueLevel[dados$FatigueLevel > 3] <- 1
 
 #dados para treinar a rede
-trainset <- dadosnorm[1:700,]
+trainset <- dados[1:650,]
 
 #dados para testar a rede
-testset <- dadosnorm[701:845,]
+testset <- dados[651:845,]
 
 #formulas
 formulaRNA <- Performance.Task+FatigueLevel ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
 formulaFatigue <- FatigueLevel ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
 formulaTask <- Performance.Task ~ Performance.KDTMean+Performance.MAMean+Performance.MVMean+Performance.TBCMean+Performance.DDCMean+Performance.DMSMean+Performance.AEDMean+Performance.ADMSLMean
 
+#apenas com os atributos significativos
+formulaFatigue <- FatigueLevel ~ Performance.KDTMean + Performance.MAMean + Performance.DDCMean + Performance.Task
+
 #redes
 fatiguenet <- neuralnet(formulaFatigue, trainset, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
 
 tasknet <- neuralnet(formulaTask, trainset, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
+
+
 
 plot(fatiguenet, rep="best")
 
@@ -32,6 +41,8 @@ plot(tasknet, rep="best")
 #testset tem valores de output que ?? necess??rio remov??-los
 
 vartest <- subset(testset, select = -c(FatigueLevel, Performance.Task))
+
+vartest <- subset(testset, select = c(Performance.KDTMean,Performance.MAMean,Performance.DDCMean,Performance.Task))
 
 #testar a rede
 
