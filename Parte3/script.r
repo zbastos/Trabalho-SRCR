@@ -1,5 +1,6 @@
 library(neuralnet)
 library(hydroGOF)
+library(leaps)
 
 #weka (verifcar dados)
 #summary()
@@ -8,8 +9,8 @@ library(hydroGOF)
 dados <- read.csv("/Users/Ricardo/Documents/Git/Trabalho-SRCR/Parte3/dados.csv",header=TRUE,sep=";",dec=",")
 
 #normalizar fatiguelevel para 0 e 1
-dados$FatigueLevel[dados$FatigueLevel <= 3] <- 0
-dados$FatigueLevel[dados$FatigueLevel > 3] <- 1
+dados$FatigueLevel[dados$FatigueLevel <= 3] <- 1
+dados$FatigueLevel[dados$FatigueLevel > 3] <- 2
 
 #dados para treinar a rede
 trainset <- dados[1:650,]
@@ -30,10 +31,7 @@ fatiguenet <- neuralnet(formulaFatigue, trainset, hidden = c(10,5), lifesign = "
 
 tasknet <- neuralnet(formulaTask, trainset, hidden = c(10,5), lifesign = "full", linear.output = FALSE, threshold = 0.1)
 
-
-
 plot(fatiguenet, rep="best")
-
 plot(tasknet, rep="best")
 
 
@@ -72,6 +70,7 @@ rmse(c(testset$Performance.Task),c(resultadotask$Output))
 
 dados <- read.csv("/Users/Ricardo/Documents/Git/Trabalho-SRCR/Parte3/exaustao.csv",header=TRUE,sep=";",dec=",")
 
+plot(dados$FatigueLevel)
 
 plot(dados$Performance.KDTMean,dados$FatigueLevel)
 plot(dados$Performance.MAMean,dados$FatigueLevel)
